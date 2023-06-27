@@ -1,4 +1,6 @@
+import 'package:aarakshak/ui_components/colors/color_code.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class SessionCard extends StatelessWidget {
   const SessionCard({Key? key}) : super(key: key);
@@ -6,70 +8,64 @@ class SessionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       width: double.infinity,
-      height: 170,
+      height: 120,
       decoration: BoxDecoration(
         border: Border.all(color: const Color(0xa5ab8ee3)),
         color: const Color(0x11ab8ee3),
         borderRadius: BorderRadius.circular(18),
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Expanded(
+          Padding(
+            padding: const EdgeInsets.all(8.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children: [
                     Text(
-                      "Duty Name",
+                      "Ramlila Ground",
                       style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
+                        color: AppColors.blackText,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                     Text(
-                      "Location",
+                      "Chandni Chowk",
                       style: TextStyle(
-                        color: Colors.black,
+                        color: AppColors.blackText,
                         fontSize: 13,
                       ),
                     ),
                   ],
                 ),
-                const Text(
-                  "15 April",
+                Text(
+                  "15 April, 2023",
                   style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
+                    color: AppColors.blackText,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 13,
                   ),
                 ),
-                const Text(
-                  "Check-in: 18:45",
+                Text(
+                  "Check-in: 05:00 pm",
                   style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
+                    color: AppColors.blackText,
+                    fontSize: 13,
                   ),
                 ),
               ],
             ),
           ),
-          Expanded(
-              child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              CircleAvatar(
-                radius: 60,
-                backgroundColor: Colors.green,
-              ),
-              SizedBox(
-                height: 12,
-              ),
-            ],
-          )),
+          SvgPicture.asset(
+            'assets/images/tap_nfc.svg',
+          ),
         ],
       ),
     );
