@@ -1,6 +1,7 @@
 import 'package:aarakshak/ui_components/colors/color_code.dart';
 import 'package:aarakshak/widgets/profile_card.dart';
 import 'package:aarakshak/widgets/session_card.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -89,7 +90,8 @@ class HomePage extends StatelessWidget {
                           color: Colors.grey.withOpacity(0.5), // shadow color
                           spreadRadius: 1, // how spread out the shadow is
                           blurRadius: 5, // blur radius of the shadow
-                          offset: const Offset(0, 3), // changes the position of the shadow
+                          offset: const Offset(
+                              0, 3), // changes the position of the shadow
                         ),
                       ],
                     ),
@@ -106,7 +108,8 @@ class HomePage extends StatelessWidget {
                           color: Colors.grey.withOpacity(0.5), // shadow color
                           spreadRadius: 2, // how spread out the shadow is
                           blurRadius: 5, // blur radius of the shadow
-                          offset: const Offset(0, 3), // changes the position of the shadow
+                          offset: const Offset(
+                              0, 3), // changes the position of the shadow
                         ),
                       ],
                     ),
@@ -123,7 +126,8 @@ class HomePage extends StatelessWidget {
                           color: Colors.grey.withOpacity(0.5), // shadow color
                           spreadRadius: 2, // how spread out the shadow is
                           blurRadius: 5, // blur radius of the shadow
-                          offset: const Offset(0, 3), // changes the position of the shadow
+                          offset: const Offset(
+                              0, 3), // changes the position of the shadow
                         ),
                       ],
                     ),
@@ -133,6 +137,64 @@ class HomePage extends StatelessWidget {
             ),
           ],
         ),
+      ),
+      bottomNavigationBar: CurvedNavigationBar(
+        animationDuration: const Duration(milliseconds: 250),
+        color: AppColors.navbarColor,
+        backgroundColor: Colors.transparent,
+        items: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(top: 20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                SvgPicture.asset(
+                  'assets/images/home_outlined.svg',
+                  color: Colors.white,
+                ),
+                const Text(
+                  "Home",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                SvgPicture.asset(
+                  'assets/images/bell_outlined.svg',
+                  color: Colors.white,
+                ),
+                const Text(
+                  "Alerts",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                SvgPicture.asset(
+                  'assets/images/session_outlined.svg',
+                  color: Colors.white,
+                ),
+                const Text(
+                  "Sessions",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ],
+            ),
+          ),
+        ],
+        onTap: (index) {
+          //Handle button tap
+        },
       ),
     );
   }

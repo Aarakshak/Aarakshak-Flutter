@@ -13,4 +13,6 @@ class AppColors{
   // Text
   static Color whiteText = const Color(0xffffffff);
   static Color blackText = const Color(0xff000000);
+  // Navbar Color
+  static Color navbarColor = const Color(0xff056ABB);
 }
