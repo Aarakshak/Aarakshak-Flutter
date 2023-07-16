@@ -55,10 +55,10 @@ class CurrentSession extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Column(
+                        const Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
+                          children: [
                             Text(
                               "Ramila Ground",
                               style: TextStyle(
@@ -73,12 +73,10 @@ class CurrentSession extends StatelessWidget {
                           decoration: BoxDecoration(
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.grey
-                                    .withOpacity(0.5), // shadow color
-                                spreadRadius: 1, // how spread out the shadow is
-                                blurRadius: 5, // blur radius of the shadow
-                                offset: const Offset(
-                                    0, 3), // changes the position of the shadow
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 1,
+                                blurRadius: 5,
+                                offset: const Offset(0, 3),
                               ),
                             ],
                           ),
@@ -153,38 +151,44 @@ class CurrentSession extends StatelessWidget {
                                 const SizedBox(
                                   width: 10,
                                 ),
-                                Column(
+                                const Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: const [
+                                  children: [
                                     Text("Reporting to:",
                                         style: TextStyle(
-                                            fontWeight: FontWeight.w400, fontSize: 10)),
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 10)),
                                     Text("Satnam Singh",
                                         style: TextStyle(
-                                            fontWeight: FontWeight.w500, fontSize: 16)),
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 16)),
                                   ],
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 10,),
-                            Row(
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            const Row(
                               children: [
                                 Column(
-                                  children: const [
+                                  children: [
                                     Text("05:00 pm",
                                         style: TextStyle(
-                                            fontWeight: FontWeight.w700, fontSize: 17)),
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 17)),
                                     Text("Check-in",
                                         style: TextStyle(
-                                            fontWeight: FontWeight.w400, fontSize: 12)),
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 12)),
                                   ],
                                 ),
-                                const SizedBox(
+                                SizedBox(
                                   width: 30,
                                 ),
                                 Column(
-                                  children: const [
+                                  children: [
                                     Text(
                                       "09:00 pm",
                                       style: TextStyle(
@@ -205,7 +209,9 @@ class CurrentSession extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 5,),
+                        const SizedBox(
+                          height: 5,
+                        ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -215,10 +221,12 @@ class CurrentSession extends StatelessWidget {
                               padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
-                                color: const Color(0xff50C878).withOpacity(0.10),
+                                color:
+                                    const Color(0xff50C878).withOpacity(0.10),
                               ),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
                                   const Text(
                                     "Checkpoint-1:",
@@ -246,10 +254,12 @@ class CurrentSession extends StatelessWidget {
                               padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
-                                color: const Color(0xff056abb).withOpacity(0.10),
+                                color:
+                                    const Color(0xff056abb).withOpacity(0.10),
                               ),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
                                   const Text(
                                     "Checkpoint-2:",
@@ -278,43 +288,43 @@ class CurrentSession extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  flex: 2,
+                    flex: 2,
                     child: Container(
-                  margin:
-                      const EdgeInsets.only(left: 30, right: 30, bottom: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: AppColors.profileCardBackgroundColor,
-                        ),
-                        child: Row(
-                          children: [
-                            SvgPicture.asset(
-                              'assets/images/info.svg',
-                              color: Colors.white,
+                      margin: const EdgeInsets.only(
+                          left: 30, right: 30, bottom: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: AppColors.profileCardBackgroundColor,
                             ),
-                            const SizedBox(
-                              width: 4,
+                            child: Row(
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/images/info.svg',
+                                  color: Colors.white,
+                                ),
+                                const SizedBox(
+                                  width: 4,
+                                ),
+                                const Text("Raise an Issue",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 13,
+                                        color: Colors.white)),
+                              ],
                             ),
-                            const Text("Raise an Issue",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 13,
-                                    color: Colors.white)),
-                          ],
-                        ),
+                          ),
+                          SvgPicture.asset(
+                            'assets/images/sos.svg',
+                          ),
+                        ],
                       ),
-                      SvgPicture.asset(
-                        'assets/images/sos.svg',
-                      ),
-                    ],
-                  ),
-                )),
+                    )),
               ],
             ),
           ),
