@@ -63,6 +63,7 @@ class AlertScreen extends StatelessWidget {
               ListView.builder(
                 shrinkWrap: true,
                 itemCount: 30,
+                physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   return Container(
                     height: 65,

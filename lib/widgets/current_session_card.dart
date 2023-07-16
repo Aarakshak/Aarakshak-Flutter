@@ -3,8 +3,8 @@ import 'package:aarakshak/ui_components/colors/color_code.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class SessionCard extends StatelessWidget {
-  const SessionCard({Key? key}) : super(key: key);
+class CurrentSessionCard extends StatelessWidget {
+  const CurrentSessionCard({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

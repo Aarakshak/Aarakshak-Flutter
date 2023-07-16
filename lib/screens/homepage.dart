@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:aarakshak/widgets/profile_card.dart';
-import 'package:aarakshak/widgets/session_card.dart';
+import 'package:aarakshak/widgets/current_session_card.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class HomePage extends StatelessWidget {
@@ -59,7 +59,7 @@ class HomePage extends StatelessWidget {
             const SizedBox(
               height: 12,
             ),
-            const SessionCard(),
+            const CurrentSessionCard(),
             const SizedBox(
               height: 20,
             ),

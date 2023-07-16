@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../ui_components/colors/color_code.dart';
 
-
 class ProfileCard extends StatelessWidget {
   const ProfileCard({Key? key}) : super(key: key);
 
@@ -37,7 +36,10 @@ class ProfileCard extends StatelessWidget {
                       const SizedBox(height: 8),
                       Text(
                         "Head Constable",
-                        style: TextStyle(color: AppColors.whiteText, fontSize: 16,fontWeight: FontWeight.w700),
+                        style: TextStyle(
+                            color: AppColors.whiteText,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700),
                       ),
                     ],
                   ),
@@ -46,12 +48,16 @@ class ProfileCard extends StatelessWidget {
                     children: [
                       Text(
                         "Badge No.",
-                        style: TextStyle(color: AppColors.whiteText, fontSize: 16),
+                        style:
+                            TextStyle(color: AppColors.whiteText, fontSize: 16),
                       ),
                       const SizedBox(height: 8),
                       Text(
                         "XXXXXX",
-                        style: TextStyle(color: AppColors.whiteText, fontSize: 16,fontWeight: FontWeight.w700),
+                        style: TextStyle(
+                            color: AppColors.whiteText,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700),
                       ),
                     ],
                   ),
@@ -61,31 +67,31 @@ class ProfileCard extends StatelessWidget {
           ),
           Expanded(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircleAvatar(
-                    radius: 62,
-                    backgroundColor: AppColors.white,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 1.5),
-                      child: SvgPicture.asset(
-                        'assets/images/blank_image.svg',
-                        alignment: Alignment.center,
-                      ),
-                    ),
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircleAvatar(
+                radius: 62,
+                backgroundColor: AppColors.white,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 1.5),
+                  child: SvgPicture.asset(
+                    'assets/images/blank_image.svg',
+                    alignment: Alignment.center,
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                   Text(
-                    "ANIL RATHORE",
-                    style: TextStyle(
-                        color: AppColors.whiteText,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ],
-              )),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                "ANIL RATHORE",
+                style: TextStyle(
+                    color: AppColors.whiteText,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold),
+              ),
+            ],
+          )),
         ],
       ),
     );

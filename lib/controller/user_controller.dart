@@ -13,7 +13,7 @@ class Controller extends GetxController{
     } else if (index.value == 1) {
       return const AlertScreen();
     } else {
-      return const SessionScreen();
+      return const SessionsScreen();
     }
   }
 }

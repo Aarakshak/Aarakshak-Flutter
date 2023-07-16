@@ -5,6 +5,7 @@ class AppColors{
   static Color profileCardBackgroundColor = const Color(0xff056ABB);
   static Color profileCardEllipseColor = const Color(0xff50C878);
   static Color profileCardCheckInText = const Color(0xff38AC36);
+  static Color circularBackground = const Color(0xffD9D9D9);
 
   // Normal Colors
   static Color white = const Color(0xffffffff);
