@@ -2,8 +2,8 @@ import 'package:aarakshak/ui_components/colors/color_code.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class NFCModeOn extends StatelessWidget {
-  const NFCModeOn({super.key});
+class NFCCapturingScreen extends StatelessWidget {
+  const NFCCapturingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

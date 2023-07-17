@@ -1,4 +1,4 @@
-import 'package:aarakshak/screens/nfc_on.dart';
+import 'package:aarakshak/screens/nfc_capturing_screen.dart';
 import 'package:aarakshak/widgets/current_session_bottomsheet.dart';
 import 'package:aarakshak/ui_components/colors/color_code.dart';
 import 'package:flutter/material.dart';
@@ -91,7 +91,7 @@ class CurrentSessionCard extends StatelessWidget {
         InkWell(
           onTap: () {
             Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => NFCModeOn()));
+                .push(MaterialPageRoute(builder: (context) => NFCCapturingScreen()));
           },
           child: Container(
             margin: const EdgeInsets.only(right: 20),

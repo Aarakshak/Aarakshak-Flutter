@@ -1,4 +1,5 @@
 import 'package:aarakshak/screens/dashboard.dart';
+import 'package:aarakshak/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: Dashboard(),
+      home: LoginScreen(),
     );
   }
 }
