@@ -1,6 +1,7 @@
-import 'package:aarakshak/screens/dashboard.dart';
 import 'package:aarakshak/ui_components/colors/color_code.dart';
 import 'package:flutter/material.dart';
+
+import '../controller/authentication_logic.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -57,7 +58,8 @@ class LoginScreen extends StatelessWidget {
                             ],
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 10.0),
                             child: TextField(
                               decoration: InputDecoration(
                                 labelText: 'Username',
@@ -103,12 +105,14 @@ class LoginScreen extends StatelessWidget {
                             ],
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 10.0),
                             child: TextField(
                               decoration: InputDecoration(
                                 labelText: 'Password',
                                 labelStyle: TextStyle(
-                                  color: AppColors.profileCardBackgroundColor.withOpacity(0.4),
+                                  color: AppColors.profileCardBackgroundColor
+                                      .withOpacity(0.4),
                                   fontWeight: FontWeight.bold,
                                 ),
                                 prefixIcon: Icon(
@@ -128,24 +132,22 @@ class LoginScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20.0),
               GestureDetector(
-                onTap: (){
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const Dashboard()));
+                onTap: () async {
+                  await authenticate(context);
                 },
                 child: Container(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    color: AppColors.profileCardBackgroundColor
-                  ),
+                      borderRadius: BorderRadius.circular(30),
+                      color: AppColors.profileCardBackgroundColor),
                   width: 230,
                   height: 55,
                   alignment: Alignment.center,
                   child: const Text(
                     'Continue',
                     style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500
-                    ),
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500),
                   ),
                 ),
               ),
