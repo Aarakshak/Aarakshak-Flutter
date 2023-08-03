@@ -6,28 +6,35 @@ class User {
   String baseUrl = "https://helpful-calf-earmuffs.cyclic.cloud/v1";
 
   Future<http.Response> login(String email, String password) async {
-    Uri loginUri =
-        Uri.parse("$baseUrl/user/login");
+    Uri loginUri = Uri.parse("$baseUrl/user/login");
     final response = await http.post(
       loginUri,
       body: jsonEncode(
         {
-          "emailId": "chinmayagarwal4@gmail.com",
-          "password": "12345",
+          "emailId": email,
+          "password": password,
         },
       ),
       headers: {
         'Content-Type': 'application/json',
       },
     );
-
+    print(response.body);
     return response;
   }
 
-  Future<http.Response> otpVerify(String otp, String badgeID) async {
-    Uri loginUri = Uri.parse("$baseUrl/verify-otp");
-    final response =
-        await http.post(loginUri, body: {"badgeID": 34567, "otp": "109665"});
+  Future<http.Response> otpVerify(String otp, int badgeID) async {
+    Uri otpVerify = Uri.parse("$baseUrl/user/verify-otp");
+    final response = await http.post(
+      otpVerify,
+      body: jsonEncode({
+        "badgeID": badgeID,
+        "otp": otp,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
     return response;
   }
 

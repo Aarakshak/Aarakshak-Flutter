@@ -36,6 +36,7 @@ dependencies:
   get: ^4.6.5
   http: ^1.1.0
   local_auth: ^2.1.6
+  pinput: ^2.4.0
 
 dev_dependencies:
   flutter_test:

@@ -1,9 +1,10 @@
 import 'dart:convert';
 
-import 'package:aarakshak/screens/homepage.dart';
+import 'package:aarakshak/controller/user_controller.dart';
+import 'package:aarakshak/screens/biometric_capturing_screen.dart';
 import 'package:aarakshak/ui_components/colors/color_code.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_connect/http/src/response/response.dart';
+import 'package:get/get.dart';
 
 import '../repository/user_repository.dart';
 
@@ -11,6 +12,7 @@ class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
   final TextEditingController policeID = TextEditingController();
   final TextEditingController password = TextEditingController();
+  final Controller controller = Get.put(Controller());
 
   @override
   Widget build(BuildContext context) {
@@ -145,9 +147,8 @@ class LoginScreen extends StatelessWidget {
                       await User().login(policeID.text, password.text);
                   var data = jsonDecode(response.body);
                   if (data["badgeID"] != null) {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => const HomePage()),
-                    );
+                    controller.badgeID = data["badgeID"];
+                    Get.off(const BiometricScreen());
                   } else {
                     print(policeID.text);
                     print(password.text);
