@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class User {
-  String baseUrl = "https://helpful-calf-earmuffs.cyclic.cloud/v1";
+  String baseUrl = "https://violet-kitten-toga.cyclic.cloud/v1";
 
   Future<http.Response> login(String email, String password) async {
     Uri loginUri = Uri.parse("$baseUrl/user/login");
@@ -39,8 +39,9 @@ class User {
   }
 
   Future<http.Response> userScreen(String userID) async {
-    Uri loginUri = Uri.parse("$baseUrl/23456");
+    Uri loginUri = Uri.parse("$baseUrl/user/$userID");
     final response = await http.get(loginUri);
+    print(response);
     return response;
   }
 

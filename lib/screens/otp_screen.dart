@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:aarakshak/repository/user_repository.dart';
-import 'package:aarakshak/screens/homepage.dart';
+import 'package:aarakshak/screens/dashboard.dart';
 import 'package:aarakshak/ui_components/colors/color_code.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -37,12 +37,12 @@ class OTPScreen extends StatelessWidget {
                   data.toString(),
                   controller.badgeID!,
                 );
-                if(response.statusCode != 200){
-
+                if(response.statusCode >= 300 || response.statusCode <200){
+                  print(response);
                 } else {
                   var responseData = jsonDecode(response.body);
                   print(responseData);
-                  Get.off(const HomePage());
+                  Get.off(const Dashboard());
                 }
               },
             ),
