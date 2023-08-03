@@ -1,10 +1,16 @@
+import 'dart:convert';
+
+import 'package:aarakshak/screens/homepage.dart';
 import 'package:aarakshak/ui_components/colors/color_code.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_connect/http/src/response/response.dart';
 
-import '../controller/authentication_logic.dart';
+import '../repository/user_repository.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+  LoginScreen({super.key});
+  final TextEditingController policeID = TextEditingController();
+  final TextEditingController password = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -61,8 +67,9 @@ class LoginScreen extends StatelessWidget {
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 10.0),
                             child: TextField(
+                              controller: policeID,
                               decoration: InputDecoration(
-                                labelText: 'Username',
+                                labelText: 'Police ID',
                                 labelStyle: TextStyle(
                                   color: AppColors.profileCardBackgroundColor
                                       .withOpacity(0.4),
@@ -108,6 +115,7 @@ class LoginScreen extends StatelessWidget {
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 10.0),
                             child: TextField(
+                              controller: password,
                               decoration: InputDecoration(
                                 labelText: 'Password',
                                 labelStyle: TextStyle(
@@ -133,7 +141,18 @@ class LoginScreen extends StatelessWidget {
               const SizedBox(height: 20.0),
               GestureDetector(
                 onTap: () async {
-                  await authenticate(context);
+                  final response =
+                      await User().login(policeID.text, password.text);
+                  var data = jsonDecode(response.body);
+                  if (data["badgeID"] != null) {
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => const HomePage()),
+                    );
+                  } else {
+                    print(policeID.text);
+                    print(password.text);
+                    print(data);
+                  }
                 },
                 child: Container(
                   decoration: BoxDecoration(
