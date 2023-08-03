@@ -26,13 +26,13 @@ class _NFCCapturingScreenState extends State<NFCCapturingScreen> {
         onDiscovered: (data) async {
           print("session started");
           if (data != null) {
+            print(data.data['nfca']['identifier']);
             Ndef? ndef = Ndef.from(data);
             if (ndef == null) {
               print('Tag is not compatible with NDEF');
               return;
             } else {
               await ndef.read().then((value) {
-                print(value.records.length);
                 value.records.forEach((element) {
                   List<int> payloadBytes = element.payload;
                   String readablePayload = utf8.decode(payloadBytes);
