@@ -13,6 +13,7 @@ class LoginScreen extends StatelessWidget {
   final TextEditingController policeID = TextEditingController();
   final TextEditingController password = TextEditingController();
   final Controller controller = Get.put(Controller());
+  final ValueNotifier<bool> _isLoading = ValueNotifier<bool>(false);
 
   @override
   Widget build(BuildContext context) {
@@ -141,36 +142,48 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20.0),
-              GestureDetector(
-                onTap: () async {
-                  final response =
-                      await User().login(policeID.text, password.text);
-                  var data = jsonDecode(response.body);
-                  if (data["badgeID"] != null) {
-                    controller.badgeID = data["badgeID"];
-                    Get.off(const BiometricScreen());
-                  } else {
-                    print(policeID.text);
-                    print(password.text);
-                    print(data);
-                  }
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      color: AppColors.profileCardBackgroundColor),
-                  width: 230,
-                  height: 55,
-                  alignment: Alignment.center,
-                  child: const Text(
-                    'Continue',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w500),
-                  ),
-                ),
-              ),
+              ValueListenableBuilder<bool>(
+                  valueListenable: _isLoading,
+                  builder: (context, isLoading, child) {
+                    if (isLoading) {
+                      return const CircularProgressIndicator();
+                    } else {
+                      return GestureDetector(
+                        onTap: () async {
+                          _isLoading.value = true;
+                          final response =
+                              await User().login(policeID.text, password.text);
+                          var data = jsonDecode(response.body);
+                          if (data["badgeID"] != null) {
+                            controller.badgeID = data["badgeID"];
+                            _isLoading.value = false;
+                            Get.off(const BiometricScreen());
+                          } else {
+                            print(policeID.text);
+                            print(password.text);
+                            print(data);
+                          }
+                          _isLoading.value = false;
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              color: AppColors.profileCardBackgroundColor),
+                          width: 230,
+                          height: 55,
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'Continue',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                      );
+                    }
+                  }),
+
             ],
           ),
         ),

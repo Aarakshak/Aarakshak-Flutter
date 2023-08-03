@@ -39,15 +39,14 @@ class User {
   }
 
   Future<http.Response> userScreen(String userID) async {
-    Uri loginUri = Uri.parse("$baseUrl/user/$userID");
-    final response = await http.get(loginUri);
-    print(response);
+    Uri userScreenData = Uri.parse("$baseUrl/user/$userID");
+    final response = await http.get(userScreenData);
     return response;
   }
 
   Future<http.Response> currentSessionDetails(String userID) async {
-    Uri loginUri = Uri.parse("$baseUrl/23456/current-session");
-    final response = await http.get(loginUri);
+    Uri currentSessionDetailsData = Uri.parse("$baseUrl/user/$userID/current-session");
+    final response = await http.get(currentSessionDetailsData);
     return response;
   }
 }
