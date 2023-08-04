@@ -1,7 +1,13 @@
+import 'dart:convert';
+
+import 'package:aarakshak/controller/user_controller.dart';
 import 'package:aarakshak/ui_components/colors/color_code.dart';
 import 'package:aarakshak/widgets/session_screen_bottom_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+
+import '../repository/user_repository.dart';
 
 class SessionsScreen extends StatefulWidget {
   const SessionsScreen({super.key});
@@ -12,6 +18,36 @@ class SessionsScreen extends StatefulWidget {
 
 class _SessionsScreenState extends State<SessionsScreen> {
   String initialValue = "Month";
+  final Controller controller = Get.find();
+
+  fetchData() async {
+    final response = await User().previousSessions(controller.badgeID.toString());
+    final data = jsonDecode(response.body);
+
+    List<dynamic> previousSessions = data['previousSessions'];
+
+    for (var session in previousSessions) {
+      String location = session['location'];
+      String date = session['date'];
+      String day = session['day'];
+      bool attended = session['attended'];
+
+      print('Location: $location');
+      print('Date: $date');
+      print('Day: $day');
+      print('Attended: $attended');
+      print('---');
+    }
+
+    print(data);
+  }
+
+  @override
+  void initState() {
+    fetchData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

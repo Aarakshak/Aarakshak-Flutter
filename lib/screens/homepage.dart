@@ -31,6 +31,7 @@ class _HomePageState extends State<HomePage> {
     controller.lastName = data["surname"];
     controller.sessions = data["sessions"];
 
+
     final response1 =
         await User().currentSessionDetails(controller.badgeID.toString());
     final data1 = jsonDecode(response1.body);
@@ -48,7 +49,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    fetchData();
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -107,7 +107,7 @@ class _HomePageState extends State<HomePage> {
                     const SizedBox(
                       height: 12,
                     ),
-                    const CurrentSessionCard(),
+                    CurrentSessionCard(),
                     const SizedBox(
                       height: 20,
                     ),
@@ -185,6 +185,6 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               )
-            : const CircularProgressIndicator());
+            : const Center(child: CircularProgressIndicator()));
   }
 }

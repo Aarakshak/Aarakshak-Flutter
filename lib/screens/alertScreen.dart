@@ -1,9 +1,44 @@
+import 'dart:convert';
+
 import 'package:aarakshak/ui_components/colors/color_code.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
-class AlertScreen extends StatelessWidget {
+import '../controller/user_controller.dart';
+import '../repository/user_repository.dart';
+
+class AlertScreen extends StatefulWidget {
   const AlertScreen({super.key});
+
+  @override
+  State<AlertScreen> createState() => _AlertScreenState();
+}
+
+class _AlertScreenState extends State<AlertScreen> {
+  final Controller controller = Get.find();
+
+  fetchData() async {
+    final response = await User().alerts(controller.badgeID.toString());
+    Map data = jsonDecode(response.body);
+    List<dynamic> upcomingSessions = data['upcomingSessions'];
+
+    for (var session in upcomingSessions) {
+      String date = session['date'];
+      String day = session['day'];
+      String location = session['location1'];
+
+      print('Date: $date');
+      print('Day: $day');
+      print('Location: $location');
+    }
+  }
+
+  @override
+  void initState() {
+    fetchData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

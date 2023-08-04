@@ -1,12 +1,17 @@
-import 'package:aarakshak/screens/nfc_capturing_screen.dart';
+
+import 'package:aarakshak/controller/user_controller.dart';
 import 'package:aarakshak/widgets/current_session_bottomsheet.dart';
 import 'package:aarakshak/ui_components/colors/color_code.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+
+import '../repository/user_repository.dart';
 
 class CurrentSessionCard extends StatelessWidget {
-  const CurrentSessionCard({Key? key}) : super(key: key);
-
+  CurrentSessionCard({Key? key}) : super(key: key);
+  bool firstCall = false;
+  final Controller controller = Get.find();
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -89,9 +94,11 @@ class CurrentSessionCard extends StatelessWidget {
           ),
         ),
         InkWell(
-          onTap: () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => NFCCapturingScreen()));
+          onTap: () async {
+            // Navigator.of(context)
+            //     .push(MaterialPageRoute(builder: (context) => NFCCapturingScreen()));
+            final response = await User().startDuty(controller.badgeID.toString());
+            print(response.body);
           },
           child: Container(
             margin: const EdgeInsets.only(right: 20),

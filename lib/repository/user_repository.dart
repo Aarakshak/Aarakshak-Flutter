@@ -45,8 +45,40 @@ class User {
   }
 
   Future<http.Response> currentSessionDetails(String userID) async {
-    Uri currentSessionDetailsData = Uri.parse("$baseUrl/user/$userID/current-session");
+    Uri currentSessionDetailsData =
+        Uri.parse("$baseUrl/user/$userID/current-session");
     final response = await http.get(currentSessionDetailsData);
+    return response;
+  }
+
+  Future<http.Response> alerts(String userID) async {
+    Uri alerts = Uri.parse("$baseUrl/user/$userID/upcoming-sessions");
+    final response = await http.get(alerts);
+    return response;
+  }
+
+  Future<http.Response> previousSessions(String userID) async {
+    Uri previousSessions = Uri.parse("$baseUrl/user/$userID/previous-sessions");
+    final response = await http.get(previousSessions);
+    return response;
+  }
+
+  Future<http.Response> startDuty(String userID) async {
+    Uri startDutyUri = Uri.parse("$baseUrl/user/start-duty/3");
+
+    var requestBody = {
+      "latitude": 123.456,
+      "longitude": 789.012,
+      "radius": 100.0, // Change to a double value
+    };
+
+    final response = await http.post(
+      startDutyUri,
+      body: jsonEncode(requestBody), // Use jsonEncode to serialize the request body
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
     return response;
   }
 }
