@@ -7,6 +7,11 @@ import 'package:get/get.dart';
 class Controller extends GetxController{
   var index = 0.obs;
   change(int value) => index.value = value;
+  int? badgeID;
+  String? firstName;
+  String? lastName;
+  String? rank;
+  List sessions = [];
   Widget screen() {
     if (index.value == 0) {
       return const HomePage();

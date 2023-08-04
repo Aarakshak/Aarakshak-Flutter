@@ -1,9 +1,19 @@
-import 'package:aarakshak/screens/dashboard.dart';
+import 'dart:convert';
+
+import 'package:aarakshak/controller/user_controller.dart';
+import 'package:aarakshak/screens/biometric_capturing_screen.dart';
 import 'package:aarakshak/ui_components/colors/color_code.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../repository/user_repository.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+  LoginScreen({super.key});
+  final TextEditingController policeID = TextEditingController();
+  final TextEditingController password = TextEditingController();
+  final Controller controller = Get.put(Controller());
+  final ValueNotifier<bool> _isLoading = ValueNotifier<bool>(false);
 
   @override
   Widget build(BuildContext context) {
@@ -57,10 +67,12 @@ class LoginScreen extends StatelessWidget {
                             ],
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 10.0),
                             child: TextField(
+                              controller: policeID,
                               decoration: InputDecoration(
-                                labelText: 'Username',
+                                labelText: 'Police ID',
                                 labelStyle: TextStyle(
                                   color: AppColors.profileCardBackgroundColor
                                       .withOpacity(0.4),
@@ -103,12 +115,15 @@ class LoginScreen extends StatelessWidget {
                             ],
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 10.0),
                             child: TextField(
+                              controller: password,
                               decoration: InputDecoration(
                                 labelText: 'Password',
                                 labelStyle: TextStyle(
-                                  color: AppColors.profileCardBackgroundColor.withOpacity(0.4),
+                                  color: AppColors.profileCardBackgroundColor
+                                      .withOpacity(0.4),
                                   fontWeight: FontWeight.bold,
                                 ),
                                 prefixIcon: Icon(
@@ -127,28 +142,48 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20.0),
-              GestureDetector(
-                onTap: (){
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const Dashboard()));
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    color: AppColors.profileCardBackgroundColor
-                  ),
-                  width: 230,
-                  height: 55,
-                  alignment: Alignment.center,
-                  child: const Text(
-                    'Continue',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500
-                    ),
-                  ),
-                ),
-              ),
+              ValueListenableBuilder<bool>(
+                  valueListenable: _isLoading,
+                  builder: (context, isLoading, child) {
+                    if (isLoading) {
+                      return const CircularProgressIndicator();
+                    } else {
+                      return GestureDetector(
+                        onTap: () async {
+                          _isLoading.value = true;
+                          final response =
+                              await User().login(policeID.text, password.text);
+                          var data = jsonDecode(response.body);
+                          if (data["badgeID"] != null) {
+                            controller.badgeID = data["badgeID"];
+                            _isLoading.value = false;
+                            Get.off(const BiometricScreen());
+                          } else {
+                            print(policeID.text);
+                            print(password.text);
+                            print(data);
+                          }
+                          _isLoading.value = false;
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              color: AppColors.profileCardBackgroundColor),
+                          width: 230,
+                          height: 55,
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'Continue',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                      );
+                    }
+                  }),
+
             ],
           ),
         ),

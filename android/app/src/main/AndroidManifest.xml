@@ -2,8 +2,10 @@
     package="com.example.aarakshak">
     <uses-permission android:name="android.permission.NFC"/>
     <uses-permission android:name="android.permission.NFC_TRANSACTION_EVENT"/>
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-feature android:name="android.hardware.nfc" android:required="true" />
-    <application
+   <application
         android:label="aarakshak"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">

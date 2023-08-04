@@ -3,8 +3,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../ui_components/colors/color_code.dart';
 
 class ProfileCard extends StatelessWidget {
-  const ProfileCard({Key? key}) : super(key: key);
-
+  const ProfileCard({Key? key, required this.rank, required this.badgeNo, required this.name}) : super(key: key);
+  final String rank;
+  final String? badgeNo;
+  final String name;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -35,7 +37,7 @@ class ProfileCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        "Head Constable",
+                        rank,
                         style: TextStyle(
                             color: AppColors.whiteText,
                             fontSize: 16,
@@ -53,7 +55,7 @@ class ProfileCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        "XXXXXX",
+                        badgeNo ?? "XXXXXX",
                         style: TextStyle(
                             color: AppColors.whiteText,
                             fontSize: 16,
@@ -84,7 +86,7 @@ class ProfileCard extends StatelessWidget {
                 height: 10,
               ),
               Text(
-                "ANIL RATHORE",
+                name,
                 style: TextStyle(
                     color: AppColors.whiteText,
                     fontSize: 18,
