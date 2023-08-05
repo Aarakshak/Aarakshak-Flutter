@@ -4,6 +4,7 @@ import 'package:aarakshak/controller/user_controller.dart';
 import 'package:aarakshak/screens/biometric_capturing_screen.dart';
 import 'package:aarakshak/ui_components/colors/color_code.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 
 import '../repository/user_repository.dart';
@@ -156,6 +157,12 @@ class LoginScreen extends StatelessWidget {
                           var data = jsonDecode(response.body);
                           if (data["badgeID"] != null) {
                             controller.badgeID = data["badgeID"];
+                            FlutterSecureStorage storage =
+                                const FlutterSecureStorage();
+                            await storage.write(
+                                key: "badgeID", value: data["badgeID"]);
+                            await storage.write(
+                                key: "token", value: data["token"]);
                             _isLoading.value = false;
                             Get.off(const BiometricScreen());
                           } else {
@@ -183,7 +190,6 @@ class LoginScreen extends StatelessWidget {
                       );
                     }
                   }),
-
             ],
           ),
         ),
