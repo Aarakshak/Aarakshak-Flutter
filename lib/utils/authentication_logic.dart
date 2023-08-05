@@ -1,8 +1,7 @@
-import 'package:aarakshak/screens/otp_screen.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
 
-Future<void> authenticate() async {
+Future<void> authenticate(dynamic page) async {
   final localAuth = LocalAuthentication();
 
   bool canCheckBiometrics = await localAuth.canCheckBiometrics;
@@ -13,7 +12,7 @@ Future<void> authenticate() async {
     );
 
     if (didAuthenticate) {
-      Get.to(OTPScreen());
+      Get.to(page);
     } else {
       print("Failed");
     }

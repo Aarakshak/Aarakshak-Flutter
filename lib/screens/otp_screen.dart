@@ -4,6 +4,7 @@ import 'package:aarakshak/repository/user_repository.dart';
 import 'package:aarakshak/screens/dashboard.dart';
 import 'package:aarakshak/ui_components/colors/color_code.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
 
@@ -37,11 +38,15 @@ class OTPScreen extends StatelessWidget {
                   data.toString(),
                   controller.badgeID!,
                 );
-                if(response.statusCode >= 300 || response.statusCode <200){
-                  print(response);
+                if (response.statusCode >= 300 || response.statusCode < 200) {
+                  var data = jsonDecode(response.body);
                 } else {
-                  var responseData = jsonDecode(response.body);
-                  print(responseData);
+                  var data = jsonDecode(response.body);
+                  FlutterSecureStorage storage = const FlutterSecureStorage();
+                  await storage.write(
+                      key: "badgeID", value: data["badgeID"].toString());
+                  await storage.write(
+                      key: "token", value: data["token"].toString());
                   Get.off(const Dashboard());
                 }
               },
