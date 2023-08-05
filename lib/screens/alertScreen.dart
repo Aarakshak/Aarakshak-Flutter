@@ -17,8 +17,12 @@ class AlertScreen extends StatefulWidget {
 
 class _AlertScreenState extends State<AlertScreen> {
   final Controller controller = Get.find();
+  bool _isLoading = false;
 
   fetchData() async {
+    setState(() {
+      _isLoading = false;
+    });
     final response = await User().alerts(controller.badgeID.toString());
     Map data = jsonDecode(response.body);
     List<dynamic> upcomingSessions = data['upcomingSessions'];
@@ -32,6 +36,9 @@ class _AlertScreenState extends State<AlertScreen> {
       print('Day: $day');
       print('Location: $location');
     }
+    setState(() {
+      _isLoading = true;
+    });
   }
 
   @override
@@ -78,87 +85,93 @@ class _AlertScreenState extends State<AlertScreen> {
         ),
         backgroundColor: Colors.white,
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                "Upcoming Sessions",
-                style: TextStyle(
-                  color: AppColors.blackText,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
+      body: _isLoading == true
+          ? SingleChildScrollView(
+              child: Container(
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      "Upcoming Sessions",
+                      style: TextStyle(
+                        color: AppColors.blackText,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: 30,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return Container(
+                          height: 65,
+                          width: double.infinity,
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          margin: const EdgeInsets.symmetric(vertical: 8),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 2,
+                                blurRadius: 5,
+                                offset: const Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text(
+                                    "Duty Name",
+                                    style: TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                  Text(
+                                    "$index April",
+                                    style: const TextStyle(fontSize: 11),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 3,
+                              ),
+                              const Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Location",
+                                    style: TextStyle(fontSize: 11),
+                                  ),
+                                  Text(
+                                    "Day",
+                                    style: TextStyle(fontSize: 11),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(
-                height: 10,
-              ),
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: 30,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return Container(
-                    height: 65,
-                    width: double.infinity,
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    margin: const EdgeInsets.symmetric(vertical: 8),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 2,
-                          blurRadius: 5,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              "Duty Name",
-                              style: TextStyle(
-                                  fontSize: 13, fontWeight: FontWeight.w700),
-                            ),
-                            Text(
-                              "$index April",
-                              style: const TextStyle(fontSize: 11),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 3,
-                        ),
-                        const Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Location",
-                              style: TextStyle(fontSize: 11),
-                            ),
-                            Text(
-                              "Day",
-                              style: TextStyle(fontSize: 11),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
+            )
+          : const Center(child: CircularProgressIndicator()),
     );
   }
 }

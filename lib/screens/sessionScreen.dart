@@ -19,8 +19,13 @@ class SessionsScreen extends StatefulWidget {
 class _SessionsScreenState extends State<SessionsScreen> {
   String initialValue = "Month";
   final Controller controller = Get.find();
+  bool _isLoading = false;
 
   fetchData() async {
+    setState(() {
+      _isLoading = false;
+    });
+
     final response = await User().previousSessions(controller.badgeID.toString());
     final data = jsonDecode(response.body);
 
@@ -40,6 +45,9 @@ class _SessionsScreenState extends State<SessionsScreen> {
     }
 
     print(data);
+    setState(() {
+      _isLoading = true;
+    });
   }
 
   @override
@@ -91,7 +99,8 @@ class _SessionsScreenState extends State<SessionsScreen> {
         ],
         backgroundColor: Colors.white,
       ),
-      body: SingleChildScrollView(
+      body:_isLoading == true
+          ? SingleChildScrollView(
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Column(
@@ -241,7 +250,7 @@ class _SessionsScreenState extends State<SessionsScreen> {
             ],
           ),
         ),
-      ),
+      ):const Center(child: CircularProgressIndicator()),
     );
   }
 }
