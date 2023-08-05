@@ -67,14 +67,14 @@ class User {
     Uri startDutyUri = Uri.parse("$baseUrl/user/start-duty/3");
 
     var requestBody = {
-      "latitude": 123.456,
-      "longitude": 789.012,
-      "radius": 100.0, // Change to a double value
+      "latitude": 40.7128,
+      "longitude": -74.0060,
+      "radius": 100.0,
     };
 
     final response = await http.post(
       startDutyUri,
-      body: jsonEncode(requestBody), // Use jsonEncode to serialize the request body
+      body: jsonEncode(requestBody),
       headers: {
         'Content-Type': 'application/json',
       },
