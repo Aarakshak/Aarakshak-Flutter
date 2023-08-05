@@ -9,7 +9,7 @@ class Dashboard extends StatelessWidget {
   const Dashboard({super.key});
   @override
   Widget build(BuildContext context) {
-    final Controller controller = Get.put(Controller());
+    final Controller controller = Get.find();
     return Obx(
       () => WillPopScope(
         onWillPop: () async {

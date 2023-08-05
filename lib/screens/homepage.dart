@@ -24,13 +24,15 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _isLoading = false;
     });
-    final response = await User().userScreen(controller.badgeID.toString());
-    final data = jsonDecode(response.body);
-    controller.rank = data["rank"];
-    controller.firstName = data["firstName"];
-    controller.lastName = data["surname"];
-    controller.sessions = data["sessions"];
 
+    if (controller.rank == null) {
+      final response = await User().userScreen(controller.badgeID.toString());
+      final data = jsonDecode(response.body);
+      controller.rank = data["rank"];
+      controller.firstName = data["firstName"];
+      controller.lastName = data["surname"];
+      controller.sessions = data["sessions"];
+    }
 
     final response1 =
         await User().currentSessionDetails(controller.badgeID.toString());
