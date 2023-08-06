@@ -41,8 +41,7 @@ dependencies:
   shared_preferences: ^2.2.0
   flutter_secure_storage: ^8.0.0
   geofence_service: ^4.0.0
-  flutter_background_service: ^2.4.6
-  flutter_background_service_android: ^3.0.3
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:

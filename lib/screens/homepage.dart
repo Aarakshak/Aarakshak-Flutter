@@ -1,11 +1,9 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:aarakshak/widgets/profile_card.dart';
 import 'package:aarakshak/widgets/current_session_card.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-
 import '../controller/user_controller.dart';
 import '../repository/user_repository.dart';
 
@@ -37,7 +35,9 @@ class _HomePageState extends State<HomePage> {
     final response1 =
         await User().currentSessionDetails(controller.badgeID.toString());
     final data1 = jsonDecode(response1.body);
-    print(data1);
+    controller.checkInTime =  DateTime.parse(data1["checkInTime"].replaceAll('Z', ''));
+    controller.checkOutTime =  DateTime.parse(data1["checkOutTime"].replaceAll('Z', ''));
+    controller.location1 = data1["location1"];
     setState(() {
       _isLoading = true;
     });
@@ -109,7 +109,7 @@ class _HomePageState extends State<HomePage> {
                     const SizedBox(
                       height: 12,
                     ),
-                    CurrentSessionCard(),
+                    const CurrentSessionCard(),
                     const SizedBox(
                       height: 20,
                     ),

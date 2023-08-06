@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geofence_service/geofence_service.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class CurrentSessionCard extends StatefulWidget {
   const CurrentSessionCard({Key? key}) : super(key: key);
@@ -171,28 +172,17 @@ class _CurrentSessionCardState extends State<CurrentSessionCard> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Ramlila Ground",
-                              style: TextStyle(
-                                color: AppColors.blackText,
-                                fontSize: 15,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            Text(
-                              "Chandni Chowk",
-                              style: TextStyle(
-                                color: AppColors.blackText,
-                                fontSize: 13,
-                              ),
-                            ),
-                          ],
+                        Text(
+                          "${controller.location1}",
+                          style: TextStyle(
+                            color: AppColors.blackText,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                         Text(
-                          "15 April, 2023",
+                          DateFormat("dd MMMM, yyyy")
+                              .format(controller.checkInTime!),
                           style: TextStyle(
                             color: AppColors.blackText,
                             fontWeight: FontWeight.w700,
@@ -200,7 +190,7 @@ class _CurrentSessionCardState extends State<CurrentSessionCard> {
                           ),
                         ),
                         Text(
-                          "Check-in: 05:00 pm",
+                          "Check-in: ${DateFormat("hh:mm a").format(controller.checkInTime!)}",
                           style: TextStyle(
                             color: AppColors.blackText,
                             fontSize: 13,
