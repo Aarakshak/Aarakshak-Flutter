@@ -18,13 +18,10 @@ class _NFCCapturingScreenState extends State<NFCCapturingScreen> {
   String onemorevalue = "one more value";
 
   Future<void> start() async {
-    print("started");
     bool isNfcAvailable = await NfcManager.instance.isAvailable();
     if (isNfcAvailable) {
-      print("isava");
       NfcManager.instance.startSession(
         onDiscovered: (data) async {
-          print("session started");
           if (data != null) {
             print(data.data['nfca']['identifier']);
             Ndef? ndef = Ndef.from(data);

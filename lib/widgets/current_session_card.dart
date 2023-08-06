@@ -1,13 +1,18 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:aarakshak/controller/user_controller.dart';
 import 'package:aarakshak/widgets/current_session_bottomsheet.dart';
 import 'package:aarakshak/ui_components/colors/color_code.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geofence_service/geofence_service.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+
+import '../repository/user_repository.dart';
+import '../screens/nfc_capturing_screen.dart';
 
 class CurrentSessionCard extends StatefulWidget {
   const CurrentSessionCard({Key? key}) : super(key: key);
@@ -205,11 +210,8 @@ class _CurrentSessionCardState extends State<CurrentSessionCard> {
           ),
           InkWell(
             onTap: () async {
-              // Navigator.of(context)
-              //     .push(MaterialPageRoute(builder: (context) => NFCCapturingScreen()));
-              // final response =
-              //     await User().startDuty(controller.badgeID.toString());
-              // print(response.body);
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => const NFCCapturingScreen()));
             },
             child: Container(
               margin: const EdgeInsets.only(right: 20),
