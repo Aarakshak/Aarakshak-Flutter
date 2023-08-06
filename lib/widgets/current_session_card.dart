@@ -18,6 +18,13 @@ class CurrentSessionCard extends StatefulWidget {
 class _CurrentSessionCardState extends State<CurrentSessionCard> {
   bool firstCall = false;
   final Controller controller = Get.find();
+
+  @override
+  void initState() {
+    funtion();
+    super.initState();
+  }
+
   final StreamController _geofenceStreamController = StreamController();
   final StreamController _activityStreamController = StreamController();
   final geofenceService = GeofenceService.instance.setup(
@@ -52,12 +59,6 @@ class _CurrentSessionCardState extends State<CurrentSessionCard> {
     });
   }
 
-  @override
-  void initState() {
-    funtion();
-    super.initState();
-  }
-
   Future<void> _onGeofenceStatusChanged(
       Geofence geofence,
       GeofenceRadius geofenceRadius,
@@ -66,10 +67,11 @@ class _CurrentSessionCardState extends State<CurrentSessionCard> {
     print('geofence: ${geofence.toJson()}');
     print('geofenceRadius: ${geofenceRadius.toJson()}');
     print('geofenceStatus: ${geofenceStatus.toString()}');
-    if(geofenceStatus == GeofenceStatus.ENTER){
+    if (geofenceStatus == GeofenceStatus.ENTER) {
       print("Currect Man");
     }
-    if(geofenceStatus != GeofenceStatus.ENTER && geofenceStatus != GeofenceStatus.DWELL){
+    if (geofenceStatus != GeofenceStatus.ENTER &&
+        geofenceStatus != GeofenceStatus.DWELL) {
       print("Bhaar Man");
     }
     _geofenceStreamController.sink.add(geofence);
@@ -101,7 +103,6 @@ class _CurrentSessionCardState extends State<CurrentSessionCard> {
 
   @override
   void dispose() {
-    print("Dispose");
     geofenceService
         .removeGeofenceStatusChangeListener(_onGeofenceStatusChanged);
     geofenceService.removeLocationChangeListener(_onLocationChanged);
@@ -110,107 +111,125 @@ class _CurrentSessionCardState extends State<CurrentSessionCard> {
     geofenceService.removeActivityChangeListener(_onActivityChanged);
     geofenceService.removeStreamErrorListener(_onError);
     geofenceService.clearAllListeners();
-    geofenceService.stop(); // TODO: implement dispose
+    geofenceService.stop();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: AlignmentDirectional.centerEnd,
-      children: [
-        InkWell(
-          onTap: () {
-            showModalBottomSheet(
-              isScrollControlled: true,
-              context: context,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(40.0),
-                  topRight: Radius.circular(40.0),
-                ),
-              ),
-              builder: (BuildContext context) {
-                return const CurrentSession();
-              },
-            );
-          },
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            width: double.infinity,
-            height: 120,
-            decoration: BoxDecoration(
-              border: Border.all(color: const Color(0xa5ab8ee3)),
-              color: const Color(0x11ab8ee3),
-              borderRadius: BorderRadius.circular(18),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Ramlila Ground",
-                            style: TextStyle(
-                              color: AppColors.blackText,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                          Text(
-                            "Chandni Chowk",
-                            style: TextStyle(
-                              color: AppColors.blackText,
-                              fontSize: 13,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Text(
-                        "15 April, 2023",
-                        style: TextStyle(
-                          color: AppColors.blackText,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 13,
-                        ),
-                      ),
-                      Text(
-                        "Check-in: 05:00 pm",
-                        style: TextStyle(
-                          color: AppColors.blackText,
-                          fontSize: 13,
-                        ),
-                      ),
-                    ],
+    return WillStartForegroundTask(
+      onWillStart: () async {
+        return geofenceService.isRunningService;
+      },
+      androidNotificationOptions: AndroidNotificationOptions(
+        channelId: 'geofence_service_notification_channel',
+        channelName: 'Geofence Service Notification',
+        channelDescription:
+            'This notification appears when the geofence service is running in the background.',
+        channelImportance: NotificationChannelImportance.LOW,
+        priority: NotificationPriority.LOW,
+        isSticky: false,
+      ),
+      iosNotificationOptions: const IOSNotificationOptions(),
+      foregroundTaskOptions: const ForegroundTaskOptions(),
+      notificationTitle: 'Geofence Service is running',
+      notificationText: 'Tap to return to the app',
+      child: Stack(
+        alignment: AlignmentDirectional.centerEnd,
+        children: [
+          InkWell(
+            onTap: () {
+              showModalBottomSheet(
+                isScrollControlled: true,
+                context: context,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(40.0),
+                    topRight: Radius.circular(40.0),
                   ),
                 ),
-              ],
+                builder: (BuildContext context) {
+                  return const CurrentSession();
+                },
+              );
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              width: double.infinity,
+              height: 120,
+              decoration: BoxDecoration(
+                border: Border.all(color: const Color(0xa5ab8ee3)),
+                color: const Color(0x11ab8ee3),
+                borderRadius: BorderRadius.circular(18),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Ramlila Ground",
+                              style: TextStyle(
+                                color: AppColors.blackText,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            Text(
+                              "Chandni Chowk",
+                              style: TextStyle(
+                                color: AppColors.blackText,
+                                fontSize: 13,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          "15 April, 2023",
+                          style: TextStyle(
+                            color: AppColors.blackText,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 13,
+                          ),
+                        ),
+                        Text(
+                          "Check-in: 05:00 pm",
+                          style: TextStyle(
+                            color: AppColors.blackText,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-        InkWell(
-          onTap: () async {
-            // Navigator.of(context)
-            //     .push(MaterialPageRoute(builder: (context) => NFCCapturingScreen()));
-            // final response =
-            //     await User().startDuty(controller.badgeID.toString());
-            // print(response.body);
-          },
-          child: Container(
-            margin: const EdgeInsets.only(right: 20),
-            child: SvgPicture.asset(
-              'assets/images/tap_nfc.svg',
+          InkWell(
+            onTap: () async {
+              // Navigator.of(context)
+              //     .push(MaterialPageRoute(builder: (context) => NFCCapturingScreen()));
+              // final response =
+              //     await User().startDuty(controller.badgeID.toString());
+              // print(response.body);
+            },
+            child: Container(
+              margin: const EdgeInsets.only(right: 20),
+              child: SvgPicture.asset(
+                'assets/images/tap_nfc.svg',
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
