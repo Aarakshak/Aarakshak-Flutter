@@ -34,10 +34,14 @@ class _HomePageState extends State<HomePage> {
 
     final response1 =
         await User().currentSessionDetails(controller.badgeID.toString());
-    final data1 = jsonDecode(response1.body);
-    controller.checkInTime =  DateTime.parse(data1["checkInTime"].replaceAll('Z', ''));
-    controller.checkOutTime =  DateTime.parse(data1["checkOutTime"].replaceAll('Z', ''));
-    controller.location1 = data1["location1"];
+    final data1 = await jsonDecode(response1.body);
+    print(data1);
+    if (data1["error"] == null || data1["error"].toString().isEmpty) {
+      controller.checkInTime = DateTime.parse(data1["checkInTime"].replaceAll('Z', ''));
+      controller.checkOutTime = DateTime.parse(data1["checkOutTime"].replaceAll('Z', ''));
+      controller.location1 = data1["location1"];
+    }
+
     setState(() {
       _isLoading = true;
     });
