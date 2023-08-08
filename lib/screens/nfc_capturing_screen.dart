@@ -8,7 +8,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 
-
 class NFCCapturingScreen extends StatefulWidget {
   const NFCCapturingScreen({super.key});
 
@@ -43,12 +42,20 @@ class _NFCCapturingScreenState extends State<NFCCapturingScreen> {
                   controller.latitude = dataMap["latitude"];
                   controller.longitude = dataMap["longitude"];
                   controller.radius = dataMap["radius"];
-                  if(controller.latitude != null && controller.longitude != null){
-                    var response = await User().startDuty(controller.badgeID.toString(), controller.latitude!, controller.longitude!);
-                    if(response.statusCode == 201){
-                      print("Pop");
+                  if (controller.latitude != null &&
+                      controller.longitude != null &&
+                      controller.radius != null) {
+                    var response = await User().startDuty(
+                        controller.badgeID.toString(),
+                        controller.latitude!,
+                        controller.longitude!,
+                        controller.radius!);
+                    if (response.statusCode == 200) {
+                      print(response.statusCode);
+                      print(response.body);
+                      Get.back();
                     } else {
-                      print("Session already started");
+                      Get.back();
                     }
                   } else {
                     print("Retry");
@@ -73,6 +80,7 @@ class _NFCCapturingScreenState extends State<NFCCapturingScreen> {
     NfcManager.instance.stopSession();
     controller.longitude = null;
     controller.latitude = null;
+    controller.radius = null;
     super.dispose();
   }
 

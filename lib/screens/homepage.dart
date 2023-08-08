@@ -2,15 +2,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:aarakshak/widgets/profile_card.dart';
 import 'package:aarakshak/widgets/current_session_card.dart';
-import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:geolocator/geolocator.dart';
+// import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import '../controller/user_controller.dart';
 import '../repository/user_repository.dart';
-import '../utils/background_logic.dart';
-import '../utils/location_permission.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -75,7 +72,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
-    FlutterBackgroundService().invoke('setAsBackgroundService');
     super.dispose();
   }
 
@@ -175,100 +171,58 @@ class _HomePageState extends State<HomePage> {
                       child: ListView(
                         scrollDirection: Axis.horizontal,
                         children: [
-                          InkWell(
-                            onTap: () async {
-                              await determinePosition();
-                              if (await Geolocator.checkPermission() ==
-                                      LocationPermission.denied ||
-                                  await Geolocator.checkPermission() ==
-                                      LocationPermission.deniedForever) {
-                                print("WOrkinh");
-                              } else {
-                                FlutterBackgroundService().configure(
-                                  androidConfiguration: AndroidConfiguration(
-                                    onStart: onStart,
-                                    autoStart: true,
-                                    isForegroundMode: true,
-                                  ),
-                                  iosConfiguration: IosConfiguration(),
-                                );
-                              }
-                            },
-                            child: Container(
-                              margin: const EdgeInsets.all(5),
-                              width: 150,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.white,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 1,
-                                    blurRadius: 5,
-                                    offset: const Offset(0, 3),
-                                  ),
-                                ],
-                              ),
+                          Container(
+                            margin: const EdgeInsets.all(5),
+                            width: 150,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: 1,
+                                  blurRadius: 5,
+                                  offset: const Offset(0, 3),
+                                ),
+                              ],
                             ),
                           ),
-                          InkWell(
-                            onTap: () {
-                              FlutterBackgroundService().invoke('stopService');
-                            },
-                            child: Container(
-                              margin: const EdgeInsets.all(5),
-                              width: 150,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.white,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 2,
-                                    blurRadius: 5,
-                                    offset: const Offset(0, 3),
-                                  ),
-                                ],
-                              ),
+                          Container(
+                            margin: const EdgeInsets.all(5),
+                            width: 150,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: 2,
+                                  blurRadius: 5,
+                                  offset: const Offset(0, 3),
+                                ),
+                              ],
                             ),
                           ),
-                          InkWell(
-                            onTap: () async {
-                              final service = FlutterBackgroundService();
-                              service.invoke("startGeofence");
-                              if (await service.isRunning()) {
-                                print("Session already running");
-                                //     {
-                                //       "location": "location",
-                                //   "latitude": 73.2,
-                                //   "longitude": 11.2,
-                                //   "radius": 100.0,
-                                // }
-                              } else {
-                                print("Session not running");
-                              }
-                            },
-                            child: Container(
-                              margin: const EdgeInsets.all(5),
-                              width: 150,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.white,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey
-                                        .withOpacity(0.5), // shadow color
-                                    spreadRadius:
-                                        2, // how spread out the shadow is
-                                    blurRadius: 5, // blur radius of the shadow
-                                    offset: const Offset(0,
-                                        3), // changes the position of the shadow
-                                  ),
-                                ],
-                              ),
+                          Container(
+                            margin: const EdgeInsets.all(5),
+                            width: 150,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey
+                                      .withOpacity(0.5), // shadow color
+                                  spreadRadius:
+                                      2, // how spread out the shadow is
+                                  blurRadius: 5, // blur radius of the shadow
+                                  offset: const Offset(0,
+                                      3), // changes the position of the shadow
+                                ),
+                              ],
                             ),
                           ),
                         ],

@@ -24,7 +24,7 @@ class Controller extends GetxController{
   //NFC Fetch
   double? latitude;
   double? longitude;
-  double? radius;
+  int? radius;
 
   Widget screen() {
     if (index.value == 0) {

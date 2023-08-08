@@ -1,11 +1,9 @@
-import 'dart:async';
 
 import 'package:aarakshak/controller/user_controller.dart';
 import 'package:aarakshak/widgets/current_session_bottomsheet.dart';
 import 'package:aarakshak/ui_components/colors/color_code.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:geofence_service/geofence_service.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -21,101 +19,6 @@ class CurrentSessionCard extends StatefulWidget {
 class _CurrentSessionCardState extends State<CurrentSessionCard> {
   bool firstCall = false;
   final Controller controller = Get.find();
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  final StreamController _geofenceStreamController = StreamController();
-  final StreamController _activityStreamController = StreamController();
-  final geofenceService = GeofenceService.instance.setup(
-    interval: 5000,
-    accuracy: 100,
-    loiteringDelayMs: 60000,
-    statusChangeDelayMs: 10000,
-    useActivityRecognition: true,
-    allowMockLocations: false,
-    printDevLog: false,
-    geofenceRadiusSortType: GeofenceRadiusSortType.DESC,
-  );
-  funtion() async {
-    final geofenceList = <Geofence>[
-      Geofence(
-        id: 'place_1',
-        latitude: 30.359287,
-        longitude: 76.413131,
-        radius: [
-          GeofenceRadius(id: 'radius_1000m', length: 1000),
-        ],
-      ),
-    ];
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      geofenceService.addGeofenceStatusChangeListener(_onGeofenceStatusChanged);
-      geofenceService.addLocationChangeListener(_onLocationChanged);
-      geofenceService.addLocationServicesStatusChangeListener(
-          _onLocationServicesStatusChanged);
-      geofenceService.addActivityChangeListener(_onActivityChanged);
-      geofenceService.addStreamErrorListener(_onError);
-      geofenceService.start(geofenceList).catchError(_onError);
-    });
-  }
-
-  Future<void> _onGeofenceStatusChanged(
-      Geofence geofence,
-      GeofenceRadius geofenceRadius,
-      GeofenceStatus geofenceStatus,
-      Location location) async {
-    print('geofence: ${geofence.toJson()}');
-    print('geofenceRadius: ${geofenceRadius.toJson()}');
-    print('geofenceStatus: ${geofenceStatus.toString()}');
-    if (geofenceStatus == GeofenceStatus.ENTER) {
-      print("Currect Man");
-    }
-    if (geofenceStatus != GeofenceStatus.ENTER &&
-        geofenceStatus != GeofenceStatus.DWELL) {
-      print("Bhaar Man");
-    }
-    _geofenceStreamController.sink.add(geofence);
-  }
-
-  void _onActivityChanged(Activity prevActivity, Activity currActivity) {
-    print('prevActivity: ${prevActivity.toJson()}');
-    print('currActivity: ${currActivity.toJson()}');
-    _activityStreamController.sink.add(currActivity);
-  }
-
-  void _onLocationChanged(Location location) {
-    print('location: ${location.toJson()}');
-  }
-
-  void _onLocationServicesStatusChanged(bool status) {
-    print('isLocationServicesEnabled: $status');
-  }
-
-  void _onError(error) {
-    final errorCode = getErrorCodesFromError(error);
-    if (errorCode == null) {
-      print('Undefined error: $error');
-      return;
-    }
-
-    print('ErrorCode: $errorCode');
-  }
-
-  @override
-  void dispose() {
-    geofenceService
-        .removeGeofenceStatusChangeListener(_onGeofenceStatusChanged);
-    geofenceService.removeLocationChangeListener(_onLocationChanged);
-    geofenceService.removeLocationServicesStatusChangeListener(
-        _onLocationServicesStatusChanged);
-    geofenceService.removeActivityChangeListener(_onActivityChanged);
-    geofenceService.removeStreamErrorListener(_onError);
-    geofenceService.clearAllListeners();
-    geofenceService.stop();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -190,11 +93,11 @@ class _CurrentSessionCardState extends State<CurrentSessionCard> {
               ),
               InkWell(
                 onTap: () async {
-                  // Navigator.of(context).push(
-                  //   MaterialPageRoute(
-                  //     builder: (context) => const NFCCapturingScreen(),
-                  //   ),
-                  // );
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const NFCCapturingScreen(),
+                    ),
+                  );
                 },
                 child: Container(
                   margin: const EdgeInsets.only(right: 20),
