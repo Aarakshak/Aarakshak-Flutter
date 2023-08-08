@@ -21,6 +21,10 @@ class Controller extends GetxController{
   DateTime? checkOutTime;
   String? location1;
 
+  //NFC Fetch
+  double? latitude;
+  double? longitude;
+
   Widget screen() {
     if (index.value == 0) {
       return const HomePage();
