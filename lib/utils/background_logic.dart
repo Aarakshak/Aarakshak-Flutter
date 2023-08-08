@@ -17,6 +17,10 @@ Future<void> onStart(ServiceInstance service) async {
     });
   }
 
+  Timer _timer = Timer.periodic(Duration(seconds: 1), (Timer timer) {
+    print("i");
+  });
+
   final StreamController _geofenceStreamController = StreamController();
   final StreamController _activityStreamController = StreamController();
 

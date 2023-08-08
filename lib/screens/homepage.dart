@@ -2,11 +2,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:aarakshak/widgets/profile_card.dart';
 import 'package:aarakshak/widgets/current_session_card.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import '../controller/user_controller.dart';
 import '../repository/user_repository.dart';
+import '../utils/background_logic.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -64,8 +66,14 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    WidgetsFlutterBinding.ensureInitialized();
     fetchData();
     super.initState();
+  }
+  @override
+  void dispose() {
+    FlutterBackgroundService().invoke('setAsBackgroundService');
+    super.dispose();
   }
 
   @override
@@ -73,165 +81,172 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         backgroundColor: Colors.white,
         body: _isLoading == true
-            ? RefreshIndicator(
-                onRefresh: () async {
-                  fetchData();
-                },
-                color: Colors.red,
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(top: 20),
-                        height: kToolbarHeight,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              flex: 6,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  SvgPicture.asset(
-                                    'assets/images/title.svg',
-                                    color: Colors.red,
-                                    height: 60,
-                                  ),
-                                ],
+            ? Container(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(top: 20),
+                    height: kToolbarHeight,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          flex: 6,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              SvgPicture.asset(
+                                'assets/images/title.svg',
+                                color: Colors.red,
+                                height: 60,
                               ),
-                            ),
-                            Expanded(
-                              flex: 4,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  InkWell(
-                                    child: SvgPicture.asset(
-                                      'assets/images/new.svg',
-                                    ),
-                                    onTap: () {
-                                      fetchData();
-                                    },
-                                  ),
-                                  SvgPicture.asset(
-                                    'assets/images/bell.svg',
-                                  ),
-                                  SvgPicture.asset(
-                                    'assets/images/profile.svg',
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                      const Text(
-                        "Welcome",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      ProfileCard(
-                          rank: controller.rank!,
-                          badgeNo: controller.badgeID.toString(),
-                          name:
-                              "${controller.firstName} ${controller.lastName}"),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      const Text(
-                        "Current Session",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      const CurrentSessionCard(),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      const Text(
-                        "Local Events",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      SizedBox(
-                        height: 150,
-                        width: double.infinity,
-                        child: ListView(
-                          scrollDirection: Axis.horizontal,
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.all(5),
-                              width: 150,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.white,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 1,
-                                    blurRadius: 5,
-                                    offset: const Offset(0, 3),
-                                  ),
-                                ],
+                        Expanded(
+                          flex: 4,
+                          child: Row(
+                            mainAxisAlignment:
+                                MainAxisAlignment.spaceEvenly,
+                            children: [
+                              InkWell(
+                                child: SvgPicture.asset(
+                                  'assets/images/new.svg',
+                                ),
+                                onTap: () {
+                                  fetchData();
+                                },
                               ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.all(5),
-                              width: 150,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.white,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 2,
-                                    blurRadius: 5,
-                                    offset: const Offset(0, 3),
-                                  ),
-                                ],
+                              SvgPicture.asset(
+                                'assets/images/bell.svg',
                               ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.all(5),
-                              width: 150,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.white,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey
-                                        .withOpacity(0.5), // shadow color
-                                    spreadRadius:
-                                        2, // how spread out the shadow is
-                                    blurRadius: 5, // blur radius of the shadow
-                                    offset: const Offset(0,
-                                        3), // changes the position of the shadow
-                                  ),
-                                ],
+                              SvgPicture.asset(
+                                'assets/images/profile.svg',
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              )
+                  const Text(
+                    "Welcome",
+                    style: TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  ProfileCard(
+                      rank: controller.rank!,
+                      badgeNo: controller.badgeID.toString(),
+                      name:
+                          "${controller.firstName} ${controller.lastName}"),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const Text(
+                    "Current Session",
+                    style: TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  const CurrentSessionCard(),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const Text(
+                    "Local Events",
+                    style: TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  SizedBox(
+                    height: 150,
+                    width: double.infinity,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        InkWell(
+                          onTap: () async {
+                            final service = FlutterBackgroundService();
+                            service.configure(
+                              androidConfiguration: AndroidConfiguration(
+                                onStart: onStart,
+                                autoStart: true,
+                                isForegroundMode: true,
+                              ),
+                              iosConfiguration: IosConfiguration(),
+                            );
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.all(5),
+                            width: 150,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: 1,
+                                  blurRadius: 5,
+                                  offset: const Offset(0, 3),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.all(5),
+                          width: 150,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 2,
+                                blurRadius: 5,
+                                offset: const Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.all(5),
+                          width: 150,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey
+                                    .withOpacity(0.5), // shadow color
+                                spreadRadius:
+                                    2, // how spread out the shadow is
+                                blurRadius: 5, // blur radius of the shadow
+                                offset: const Offset(0,
+                                    3), // changes the position of the shadow
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            )
             : const Center(child: CircularProgressIndicator()));
   }
 }

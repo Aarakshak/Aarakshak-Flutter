@@ -38,6 +38,7 @@ class OTPScreen extends StatelessWidget {
                   data.toString(),
                   controller.badgeID!,
                 );
+                print(response.body);
                 if (response.statusCode >= 300 || response.statusCode < 200) {
                   var data = jsonDecode(response.body);
                 } else {
