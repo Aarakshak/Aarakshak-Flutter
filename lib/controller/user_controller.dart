@@ -13,6 +13,7 @@ class Controller extends GetxController{
   String? firstName;
   String? lastName;
   String? rank;
+  String? profilePic;
   List sessions = [];
 
   // Current Session Data

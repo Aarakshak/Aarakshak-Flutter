@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:aarakshak/widgets/profile_card.dart';
 import 'package:aarakshak/widgets/current_session_card.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import '../controller/user_controller.dart';
@@ -30,6 +31,7 @@ class _HomePageState extends State<HomePage> {
       controller.firstName = data["firstName"];
       controller.lastName = data["surname"];
       controller.sessions = data["sessions"];
+      controller.profilePic = data["profilePic"];
     }
 
     final response1 =
@@ -37,14 +39,26 @@ class _HomePageState extends State<HomePage> {
     final data1 = await jsonDecode(response1.body);
     print(data1);
     if (data1["error"] == null || data1["error"].toString().isEmpty) {
-      controller.checkInTime = DateTime.parse(data1["checkInTime"].replaceAll('Z', ''));
-      controller.checkOutTime = DateTime.parse(data1["checkOutTime"].replaceAll('Z', ''));
+      controller.checkInTime =
+          DateTime.parse(data1["checkInTime"].replaceAll('Z', ''));
+      controller.checkOutTime =
+          DateTime.parse(data1["checkOutTime"].replaceAll('Z', ''));
       controller.location1 = data1["location1"];
     }
 
     setState(() {
       _isLoading = true;
     });
+  }
+
+  notification() async {
+    print("Notification Permission Asking");
+    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.requestPermission();
+    print("Notification Permission Asked");
   }
 
   @override
