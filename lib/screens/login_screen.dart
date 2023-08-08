@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:aarakshak/controller/user_controller.dart';
-import 'package:aarakshak/screens/biometric_capturing_screen.dart';
+import 'package:aarakshak/screens/otp_screen.dart';
 import 'package:aarakshak/ui_components/colors/color_code.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -157,7 +157,7 @@ class LoginScreen extends StatelessWidget {
                           if (data["badgeID"] != null) {
                             controller.badgeID = data["badgeID"];
                             _isLoading.value = false;
-                            Get.off(const BiometricScreen());
+                            Get.off(OTPScreen());
                           } else {
                             print(policeID.text);
                             print(password.text);

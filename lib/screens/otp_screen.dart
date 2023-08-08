@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:aarakshak/repository/user_repository.dart';
-import 'package:aarakshak/screens/dashboard.dart';
+import 'package:aarakshak/screens/biometric_capturing_screen.dart';
 import 'package:aarakshak/ui_components/colors/color_code.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -43,12 +43,13 @@ class OTPScreen extends StatelessWidget {
                   var data = jsonDecode(response.body);
                 } else {
                   var data = jsonDecode(response.body);
+                  controller.profilePic = data["imageUrl"];
                   FlutterSecureStorage storage = const FlutterSecureStorage();
                   await storage.write(
                       key: "badgeID", value: data["badgeID"].toString());
                   await storage.write(
                       key: "token", value: data["token"].toString());
-                  Get.off(const Dashboard());
+                  Get.off(const BiometricScreen());
                 }
               },
             ),
