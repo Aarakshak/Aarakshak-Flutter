@@ -40,11 +40,13 @@ dependencies:
   pinput: ^2.4.0
   shared_preferences: ^2.2.0
   flutter_secure_storage: ^8.0.0
-  geofence_service: ^4.0.0
+#  geofence_service: ^4.0.0
   intl: ^0.18.1
   flutter_background_service: ^2.4.6
   flutter_background_service_android: ^3.0.3
   flutter_local_notifications: ^15.1.0+1
+  geolocator: ^9.0.2
+  permission_handler: ^10.2.0
 
 dev_dependencies:
   flutter_test:
