@@ -1,7 +1,8 @@
-import 'package:face_net_authentication/services/camera.service.dart';
-import 'package:face_net_authentication/services/ml_service.dart';
-import 'package:face_net_authentication/services/face_detector_service.dart';
 import 'package:get_it/get_it.dart';
+
+import 'services/camera.service.dart';
+import 'services/face_detector_service.dart';
+import 'services/ml_service.dart';
 
 final locator = GetIt.instance;
 

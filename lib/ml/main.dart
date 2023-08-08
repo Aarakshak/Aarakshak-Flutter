@@ -1,5 +1,5 @@
-import 'package:face_net_authentication/locator.dart';
-import 'package:face_net_authentication/pages/home.dart';
+import 'package:aarakshak/ml/locator.dart';
+import 'package:aarakshak/ml/pages/home.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(),
+      home: facePage(),
     );
   }
 }

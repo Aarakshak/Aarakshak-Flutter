@@ -1,9 +1,10 @@
+import 'package:aarakshak/ml/pages/widgets/FacePainter.dart';
+import 'package:aarakshak/ml/services/camera.service.dart';
+import 'package:aarakshak/ml/services/face_detector_service.dart';
 import 'package:camera/camera.dart';
-import 'package:face_net_authentication/locator.dart';
-import 'package:face_net_authentication/pages/widgets/FacePainter.dart';
-import 'package:face_net_authentication/services/camera.service.dart';
-import 'package:face_net_authentication/services/face_detector_service.dart';
 import 'package:flutter/material.dart';
+
+import '../../locator.dart';
 
 class CameraDetectionPreview extends StatelessWidget {
   CameraDetectionPreview({Key? key}) : super(key: key);

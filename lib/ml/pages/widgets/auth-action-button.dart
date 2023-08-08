@@ -1,10 +1,10 @@
-import 'package:face_net_authentication/locator.dart';
-import 'package:face_net_authentication/pages/db/databse_helper.dart';
-import 'package:face_net_authentication/pages/models/user.model.dart';
-import 'package:face_net_authentication/pages/profile.dart';
-import 'package:face_net_authentication/pages/widgets/app_button.dart';
-import 'package:face_net_authentication/services/camera.service.dart';
-import 'package:face_net_authentication/services/ml_service.dart';
+import 'package:aarakshak/ml/locator.dart';
+import 'package:aarakshak/ml/pages/db/databse_helper.dart';
+import 'package:aarakshak/ml/pages/models/user.model.dart';
+import 'package:aarakshak/ml/pages/profile.dart';
+import 'package:aarakshak/ml/pages/widgets/app_button.dart';
+import 'package:aarakshak/ml/services/camera.service.dart';
+import 'package:aarakshak/ml/services/ml_service.dart';
 import 'package:flutter/material.dart';
 import 'package:image/image.dart';
 import '../home.dart';
@@ -47,7 +47,7 @@ class _AuthActionButtonState extends State<AuthActionButton> {
     await _databaseHelper.insert(userToSave);
     this._mlService.setPredictedData([]);
     Navigator.push(context,
-        MaterialPageRoute(builder: (BuildContext context) => MyHomePage()));
+        MaterialPageRoute(builder: (BuildContext context) => facePage()));
   }
 
   Future _signIn(context) async {
@@ -64,7 +64,7 @@ class _AuthActionButtonState extends State<AuthActionButton> {
       showDialog(
         context: context,
         builder: (context) {
-          return AlertDialog(
+          return const AlertDialog(
             content: Text('Wrong password!'),
           );
         },
@@ -109,15 +109,15 @@ class _AuthActionButtonState extends State<AuthActionButton> {
             BoxShadow(
               color: Colors.blue.withOpacity(0.1),
               blurRadius: 1,
-              offset: Offset(0, 2),
+              offset: const Offset(0, 2),
             ),
           ],
         ),
         alignment: Alignment.center,
-        padding: EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
         width: MediaQuery.of(context).size.width * 0.8,
         height: 60,
-        child: Row(
+        child: const Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
@@ -136,7 +136,7 @@ class _AuthActionButtonState extends State<AuthActionButton> {
 
   signSheet(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(20),
+      padding: const EdgeInsets.all(20),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -145,12 +145,12 @@ class _AuthActionButtonState extends State<AuthActionButton> {
               ? Container(
                   child: Text(
                     'Welcome back, ' + predictedUser!.user + '.',
-                    style: TextStyle(fontSize: 20),
+                    style: const TextStyle(fontSize: 20),
                   ),
                 )
               : widget.isLogin
                   ? Container(
-                      child: Text(
+                      child: const Text(
                       'User not found 😞',
                       style: TextStyle(fontSize: 20),
                     ))
@@ -164,7 +164,7 @@ class _AuthActionButtonState extends State<AuthActionButton> {
                         labelText: "Your Name",
                       )
                     : Container(),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 widget.isLogin && predictedUser == null
                     ? Container()
                     : AppTextField(
@@ -172,16 +172,16 @@ class _AuthActionButtonState extends State<AuthActionButton> {
                         labelText: "Password",
                         isPassword: true,
                       ),
-                SizedBox(height: 10),
-                Divider(),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
+                const Divider(),
+                const SizedBox(height: 10),
                 widget.isLogin && predictedUser != null
                     ? AppButton(
                         text: 'LOGIN',
                         onPressed: () async {
                           _signIn(context);
                         },
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.login,
                           color: Colors.white,
                         ),
@@ -192,7 +192,7 @@ class _AuthActionButtonState extends State<AuthActionButton> {
                             onPressed: () async {
                               await _signUp(context);
                             },
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.person_add,
                               color: Colors.white,
                             ),

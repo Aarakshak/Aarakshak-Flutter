@@ -1,5 +1,6 @@
-import 'package:face_net_authentication/locator.dart';
-import 'package:face_net_authentication/services/camera.service.dart';
+
+import 'package:aarakshak/ml/locator.dart';
+import 'package:aarakshak/ml/services/camera.service.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';

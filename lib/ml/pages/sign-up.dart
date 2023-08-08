@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:math' as math;
-import 'package:face_net_authentication/locator.dart';
-import 'package:face_net_authentication/pages/widgets/FacePainter.dart';
-import 'package:face_net_authentication/pages/widgets/auth-action-button.dart';
-import 'package:face_net_authentication/pages/widgets/camera_header.dart';
-import 'package:face_net_authentication/services/camera.service.dart';
-import 'package:face_net_authentication/services/ml_service.dart';
-import 'package:face_net_authentication/services/face_detector_service.dart';
+import 'package:aarakshak/ml/locator.dart';
+import 'package:aarakshak/ml/pages/widgets/FacePainter.dart';
+import 'package:aarakshak/ml/pages/widgets/auth-action-button.dart';
+import 'package:aarakshak/ml/pages/widgets/camera_header.dart';
+import 'package:aarakshak/ml/services/camera.service.dart';
+import 'package:aarakshak/ml/services/face_detector_service.dart';
+import 'package:aarakshak/ml/services/ml_service.dart';
 import 'package:camera/camera.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:flutter/material.dart';
@@ -33,9 +33,9 @@ class SignUpState extends State<SignUp> {
   bool _bottomSheetVisible = false;
 
   // service injection
-  FaceDetectorService _faceDetectorService = locator<FaceDetectorService>();
-  CameraService _cameraService = locator<CameraService>();
-  MLService _mlService = locator<MLService>();
+  final FaceDetectorService _faceDetectorService = locator<FaceDetectorService>();
+  final CameraService _cameraService = locator<CameraService>();
+  final MLService _mlService = locator<MLService>();
 
   @override
   void initState() {
