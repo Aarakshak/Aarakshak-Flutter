@@ -71,32 +71,6 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          title: Image.asset(
-            "assets/images/title.jpg",
-          ),
-          actions: [
-            SvgPicture.asset(
-              'assets/images/new.svg',
-            ),
-            const SizedBox(
-              width: 20,
-            ),
-            SvgPicture.asset(
-              'assets/images/bell.svg',
-            ),
-            const SizedBox(
-              width: 20,
-            ),
-            SvgPicture.asset(
-              'assets/images/profile.svg',
-            ),
-            const SizedBox(
-              width: 20,
-            ),
-          ],
-          backgroundColor: Colors.white,
-        ),
         body: _isLoading == true
             ? Container(
                 padding:
@@ -104,6 +78,45 @@ class _HomePageState extends State<HomePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Container(
+                      margin: const EdgeInsets.only(top: 20),
+                      height: kToolbarHeight,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            flex: 6,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/images/title.svg',
+                                  color: Colors.red,
+                                  height: 60,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            flex: 4,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/images/new.svg',
+                                ),
+                                SvgPicture.asset(
+                                  'assets/images/bell.svg',
+                                ),
+                                SvgPicture.asset(
+                                  'assets/images/profile.svg',
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                     const Text(
                       "Welcome",
                       style:
