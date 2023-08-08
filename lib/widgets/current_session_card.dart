@@ -161,7 +161,7 @@ class _CurrentSessionCardState extends State<CurrentSessionCard> {
                               "${controller.location1}",
                               style: TextStyle(
                                 color: AppColors.blackText,
-                                fontSize: 15,
+                                fontSize: 18,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
@@ -220,15 +220,3 @@ class _CurrentSessionCardState extends State<CurrentSessionCard> {
           );
   }
 }
-
-//
-// InkWell(
-//
-// onTap: () async {
-// Navigator.of(context)
-//     .push(MaterialPageRoute(builder: (context) => const NFCCapturingScreen()));
-// },
-// child: const Center(
-// child: Text("No current sessions"),
-// ),
-// )
