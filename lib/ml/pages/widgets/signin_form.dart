@@ -1,5 +1,5 @@
-import 'package:aarakshak/ml/pages/profile.dart';
 import 'package:aarakshak/ml/services/camera.service.dart';
+import 'package:aarakshak/screens/biometric_capturing_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../locator.dart';
@@ -19,10 +19,7 @@ class SignInSheet extends StatelessWidget {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (BuildContext context) => Profile(
-                    user.user,
-                    imagePath: _cameraService.imagePath!,
-                  )));
+              builder: (BuildContext context) => const BiometricScreen()));
     } else {
       showDialog(
         context: context,

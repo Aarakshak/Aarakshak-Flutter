@@ -37,104 +37,102 @@ class _facePageState extends State<facePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: !loading
-          ? SingleChildScrollView(
-              child: SafeArea(
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Column(
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (BuildContext context) => SignIn(),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.white,
-                                boxShadow: <BoxShadow>[
-                                  BoxShadow(
-                                    color: Colors.blue.withOpacity(0.1),
-                                    blurRadius: 1,
-                                    offset: const Offset(0, 2),
-                                  ),
-                                ],
-                              ),
-                              alignment: Alignment.center,
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 14, horizontal: 16),
-                              width: MediaQuery.of(context).size.width * 0.8,
-                              child: const Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'LOGIN',
-                                    style: TextStyle(color: Color(0xFF0F0BDB)),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Icon(Icons.login, color: Color(0xFF0F0BDB))
-                                ],
-                              ),
+          ? SafeArea(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Column(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (BuildContext context) => SignIn(),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (BuildContext context) => SignUp(),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: const Color(0xFF0F0BDB),
-                                boxShadow: <BoxShadow>[
-                                  BoxShadow(
-                                    color: Colors.blue.withOpacity(0.1),
-                                    blurRadius: 1,
-                                    offset: const Offset(0, 2),
-                                  ),
-                                ],
+                          );
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white,
+                            boxShadow: <BoxShadow>[
+                              BoxShadow(
+                                color: Colors.blue.withOpacity(0.1),
+                                blurRadius: 1,
+                                offset: const Offset(0, 2),
                               ),
-                              alignment: Alignment.center,
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 14, horizontal: 16),
-                              width: MediaQuery.of(context).size.width * 0.8,
-                              child: const Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'SIGN UP',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Icon(Icons.person_add, color: Colors.white)
-                                ],
+                            ],
+                          ),
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 14, horizontal: 16),
+                          width: MediaQuery.of(context).size.width * 0.8,
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'LOGIN',
+                                style: TextStyle(color: Color(0xFF0F0BDB)),
                               ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Icon(Icons.login, color: Color(0xFF0F0BDB))
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (BuildContext context) => SignUp(),
                             ),
+                          );
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: const Color(0xFF0F0BDB),
+                            boxShadow: <BoxShadow>[
+                              BoxShadow(
+                                color: Colors.blue.withOpacity(0.1),
+                                blurRadius: 1,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
                           ),
-                        ],
-                      )
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 14, horizontal: 16),
+                          width: MediaQuery.of(context).size.width * 0.8,
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'SIGN UP',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Icon(Icons.person_add, color: Colors.white)
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
-                  ),
-                ),
+                  )
+                ],
               ),
-            )
+            ),
+          )
           : const Center(
               child: CircularProgressIndicator(),
             ),

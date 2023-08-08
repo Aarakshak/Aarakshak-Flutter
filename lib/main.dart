@@ -1,5 +1,5 @@
 import 'package:aarakshak/ml/locator.dart';
-import 'package:aarakshak/screens/biometric_capturing_screen.dart';
+import 'package:aarakshak/ml/pages/home.dart';
 import 'package:aarakshak/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: authToken == null ? LoginScreen() : BiometricScreen(),
+      home: authToken == null ? LoginScreen() : facePage(),
     );
   }
 }
