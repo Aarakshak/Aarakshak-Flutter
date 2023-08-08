@@ -1,9 +1,13 @@
 import 'dart:convert';
 
+import 'package:aarakshak/controller/user_controller.dart';
+import 'package:aarakshak/repository/user_repository.dart';
 import 'package:aarakshak/ui_components/colors/color_code.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:nfc_manager/nfc_manager.dart';
+
 
 class NFCCapturingScreen extends StatefulWidget {
   const NFCCapturingScreen({super.key});
@@ -13,11 +17,9 @@ class NFCCapturingScreen extends StatefulWidget {
 }
 
 class _NFCCapturingScreenState extends State<NFCCapturingScreen> {
-  String value = "Not connected";
-  String thisData = "No data";
-  String onemorevalue = "one more value";
+  final Controller controller = Get.find();
 
-  Future<void> start() async {
+  Future<void> nfcStart1() async {
     bool isNfcAvailable = await NfcManager.instance.isAvailable();
     if (isNfcAvailable) {
       NfcManager.instance.startSession(
@@ -27,13 +29,29 @@ class _NFCCapturingScreenState extends State<NFCCapturingScreen> {
             Ndef? ndef = Ndef.from(data);
             if (ndef == null) {
               print('Tag is not compatible with NDEF');
-              return;
             } else {
               await ndef.read().then((value) {
-                value.records.forEach((element) {
+                value.records.forEach((element) async {
                   List<int> payloadBytes = element.payload;
                   String readablePayload = utf8.decode(payloadBytes);
-                  print('Readable Payload: $readablePayload');
+                  print(readablePayload);
+                  int startIndex = readablePayload.indexOf('{');
+                  print(startIndex);
+                  String jsonData = readablePayload.substring(startIndex);
+                  Map<String, dynamic> dataMap = json.decode(jsonData);
+                  print("Map: $dataMap");
+                  controller.latitude = dataMap["latitude"];
+                  controller.longitude = dataMap["longitude"];
+                  if(controller.latitude != null && controller.longitude != null){
+                    var response = await User().startDuty(controller.badgeID.toString(), controller.latitude!, controller.longitude!);
+                    if(response.statusCode == 201){
+                      print("Pop");
+                    } else {
+                      print("Session already started");
+                    }
+                  } else {
+                    print("Retry");
+                  }
                 });
               });
             }
@@ -45,13 +63,15 @@ class _NFCCapturingScreenState extends State<NFCCapturingScreen> {
 
   @override
   void initState() {
-    start();
+    nfcStart1();
     super.initState();
   }
 
   @override
   void dispose() {
     NfcManager.instance.stopSession();
+    controller.longitude = null;
+    controller.latitude = null;
     super.dispose();
   }
 
@@ -106,9 +126,6 @@ class _NFCCapturingScreenState extends State<NFCCapturingScreen> {
                     color: AppColors.white,
                   ),
                 ),
-                Text(value),
-                Text(thisData),
-                Text(onemorevalue),
               ],
             ),
           ),
