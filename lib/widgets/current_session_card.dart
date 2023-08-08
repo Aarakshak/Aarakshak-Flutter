@@ -190,8 +190,11 @@ class _CurrentSessionCardState extends State<CurrentSessionCard> {
               ),
               InkWell(
                 onTap: () async {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const NFCCapturingScreen()));
+                  // Navigator.of(context).push(
+                  //   MaterialPageRoute(
+                  //     builder: (context) => const NFCCapturingScreen(),
+                  //   ),
+                  // );
                 },
                 child: Container(
                   margin: const EdgeInsets.only(right: 20),

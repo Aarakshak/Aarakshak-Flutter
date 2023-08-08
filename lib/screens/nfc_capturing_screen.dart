@@ -42,6 +42,7 @@ class _NFCCapturingScreenState extends State<NFCCapturingScreen> {
                   print("Map: $dataMap");
                   controller.latitude = dataMap["latitude"];
                   controller.longitude = dataMap["longitude"];
+                  controller.radius = dataMap["radius"];
                   if(controller.latitude != null && controller.longitude != null){
                     var response = await User().startDuty(controller.badgeID.toString(), controller.latitude!, controller.longitude!);
                     if(response.statusCode == 201){
