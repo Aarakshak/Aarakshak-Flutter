@@ -1,5 +1,4 @@
-import 'package:aarakshak/ml/locator.dart';
-import 'package:aarakshak/ml/pages/home.dart';
+import 'package:aarakshak/screens/biometric_capturing_screen.dart';
 import 'package:aarakshak/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -9,7 +8,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 String? authToken;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  setupServices();
   final prefs = await SharedPreferences.getInstance();
   FlutterSecureStorage storage = const FlutterSecureStorage();
   if (prefs.getBool('first_run') ?? true) {
@@ -29,7 +27,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: authToken == null ? LoginScreen() : facePage(),
+      home: authToken == null ? LoginScreen() : const BiometricScreen(),
     );
   }
 }

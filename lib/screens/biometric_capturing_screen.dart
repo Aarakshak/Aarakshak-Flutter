@@ -1,4 +1,5 @@
 import 'package:aarakshak/screens/dashboard.dart';
+import 'package:aarakshak/screens/otp_screen.dart';
 import 'package:aarakshak/utils/authentication_logic.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -22,8 +23,12 @@ class _BiometricScreenState extends State<BiometricScreen> {
     String? authToken = await storage.read(key: "token");
     String? badgeID = await storage.read(key: "badgeID");
     await Future.delayed(const Duration(milliseconds: 1000));
-    controller.badgeID = int.parse(badgeID!);
-    await authenticate(const Dashboard());
+    if (authToken != null) {
+      controller.badgeID = int.parse(badgeID!);
+      await authenticate(const Dashboard());
+    } else {
+      await authenticate(OTPScreen());
+    }
   }
 
   @override

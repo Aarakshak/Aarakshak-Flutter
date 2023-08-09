@@ -26,6 +26,11 @@ class Controller extends GetxController{
   double? longitude;
   int? radius;
 
+  //
+  bool dayStarted = false;
+  bool dayEnd = false;
+  List checkpoints = [];
+
   Widget screen() {
     if (index.value == 0) {
       return const HomePage();

@@ -45,6 +45,7 @@ class _HomePageState extends State<HomePage> {
       controller.checkOutTime =
           DateTime.parse(data1["checkOutTime"].replaceAll('Z', ''));
       controller.location1 = data1["location1"];
+      controller.checkpoints = data1["checkpoints"];
     }
 
     setState(() {
