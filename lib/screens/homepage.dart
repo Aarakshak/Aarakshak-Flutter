@@ -53,17 +53,6 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  notification() async {
-    print("Notification Permission Asking");
-    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-        FlutterLocalNotificationsPlugin();
-    flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        ?.requestPermission();
-    print("Notification Permission Asked");
-  }
-
   @override
   void initState() {
     WidgetsFlutterBinding.ensureInitialized();
