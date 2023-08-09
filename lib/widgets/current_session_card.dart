@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:aarakshak/controller/user_controller.dart';
+import 'package:aarakshak/repository/user_repository.dart';
 import 'package:aarakshak/utils/location_permission.dart';
 import 'package:aarakshak/widgets/current_session_bottomsheet.dart';
 import 'package:aarakshak/ui_components/colors/color_code.dart';
@@ -57,9 +58,19 @@ class _CurrentSessionCardState extends State<CurrentSessionCard> {
     _activityStreamController.sink.add(currActivity);
   }
 
-  void _onLocationChanged(Location location) {
+  Future<void> _onLocationChanged(Location location) async {
     controller.currentLat = location.latitude;
     controller.currentLong = location.longitude;
+
+    Future.delayed(const Duration(seconds: 10), () async {
+      await User().location_details(
+          controller.badgeID.toString().isEmpty
+              ? "3"
+              : controller.badgeID.toString(),
+          location.latitude,
+          location.longitude);
+    });
+
     print('location: ${location.toJson()}');
   }
 

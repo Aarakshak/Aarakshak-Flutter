@@ -331,10 +331,11 @@ class CurrentSession extends StatelessWidget {
                           InkWell(
                             onTap: () async {
                               if (await requestLocationPermission()) {
-                                  Geolocator.requestPermission();
-                                  Position position = await Geolocator.getCurrentPosition();
-                                  controller.currentLat = position.latitude;
-                                  controller.currentLong = position.longitude;
+                                Geolocator.requestPermission();
+                                Position position =
+                                    await Geolocator.getCurrentPosition();
+                                controller.currentLat = position.latitude;
+                                controller.currentLong = position.longitude;
                               }
                               final response = await User().issues(
                                   controller.badgeID.toString(),
