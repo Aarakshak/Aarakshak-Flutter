@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:aarakshak/controller/user_controller.dart';
 import 'package:aarakshak/repository/user_repository.dart';
@@ -12,6 +13,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geofence_service/geofence_service.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:timezone/data/latest.dart' as tzl;
 import 'package:timezone/standalone.dart' as tz;
 import '../screens/nfc_capturing_screen.dart';
@@ -61,16 +63,6 @@ class _CurrentSessionCardState extends State<CurrentSessionCard> {
   Future<void> _onLocationChanged(Location location) async {
     controller.currentLat = location.latitude;
     controller.currentLong = location.longitude;
-
-    Future.delayed(const Duration(seconds: 10), () async {
-      User().location_details(
-          controller.badgeID.toString().isEmpty
-              ? "3"
-              : controller.badgeID.toString(),
-          location.latitude,
-          location.longitude);
-    });
-
     print('location: ${location.toJson()}');
   }
 
@@ -168,7 +160,9 @@ class _CurrentSessionCardState extends State<CurrentSessionCard> {
             alignment: AlignmentDirectional.centerEnd,
             children: [
               InkWell(
-                onTap: () {
+                onTap: () async {
+                  final response = await User()
+                      .location_details("3", 28.472649, 77.48915678);
                   showModalBottomSheet(
                     isScrollControlled: true,
                     context: context,
@@ -264,6 +258,28 @@ class _CurrentSessionCardState extends State<CurrentSessionCard> {
                                         .removeStreamErrorListener(_onError);
                                     _geofenceService.clearAllListeners();
                                     _geofenceService.stop();
+                                    Future<void> _deleteCacheDir() async {
+                                      final cacheDir =
+                                          await getTemporaryDirectory();
+
+                                      if (cacheDir.existsSync()) {
+                                        cacheDir.deleteSync(recursive: true);
+                                      }
+                                    }
+
+                                    /// this will delete app's storage
+                                    Future<void> _deleteAppDir() async {
+                                      final appDir =
+                                          await getApplicationSupportDirectory();
+
+                                      if (appDir.existsSync()) {
+                                        appDir.deleteSync(recursive: true);
+                                      }
+                                    }
+
+                                    _deleteAppDir();
+                                    _deleteCacheDir();
+                                    exit(0);
                                   }
                                 });
                               },

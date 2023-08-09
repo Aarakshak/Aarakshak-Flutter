@@ -63,6 +63,9 @@ class _NFCCapturingScreenState extends State<NFCCapturingScreen> {
                       if (response.statusCode == 200) {
                         print(response.statusCode);
                         print(response.body);
+
+
+
                         controller.dayStarted.value = true;
                         storage.write(key: "dayStarted", value: "true");
                         controller.update();

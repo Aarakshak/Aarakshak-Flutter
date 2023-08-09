@@ -1,16 +1,13 @@
 # aarakshak
 
-A new Flutter project.
+Aarakshak Flutter
 
 ## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Features that this code have are ->
+1 -> NFC Support
+2 -> Geofencing
+3 -> OTP
+4 -> Login and Signup
+5 -> Face Authentication
+6 -> UI Screens
+7 -> Background working/code implementation
