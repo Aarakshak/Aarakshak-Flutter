@@ -115,4 +115,21 @@ print(requestBody);
 
     return response;
   }
+
+  Future<http.Response> location_details(String userID, double lat, double long) async {
+    Uri issue = Uri.parse("$baseUrl/update-location/$userID");
+
+    final response = await http.patch(
+      issue,
+      body: jsonEncode({
+        "latitude": lat,
+        "longitude": long
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    return response;
+  }
 }

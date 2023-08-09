@@ -77,78 +77,78 @@ class _CurrentSessionCardState extends State<CurrentSessionCard> {
     print('ErrorCode: $errorCode');
   }
 
-  notificationCode() async {
-    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-        FlutterLocalNotificationsPlugin();
-    flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()!
-        .requestPermission();
-
-    flutterLocalNotificationsPlugin.initialize(
-      const InitializationSettings(
-        android: AndroidInitializationSettings('app_icon'),
-      ),
-    );
-    tzl.initializeTimeZones();
-    for (int i = 0; i < controller.checkpoints.length; i++) {
-      String timestampString = controller.checkpoints[i]["timestamp"];
-      tz.TZDateTime dateTime =
-          tz.TZDateTime.parse(tz.getLocation('Asia/Kolkata'), timestampString);
-      tz.TZDateTime modifiedDateTime =
-          dateTime.subtract(const Duration(hours: 5, minutes: 30));
-
-      if (modifiedDateTime.isAfter(
-        tz.TZDateTime.now(
-          tz.getLocation('Asia/Kolkata'),
-        ),
-      )) {
-        print(modifiedDateTime);
-        print(
-            "${modifiedDateTime.day}/${modifiedDateTime.month}/${modifiedDateTime.year}");
-
-        await flutterLocalNotificationsPlugin.zonedSchedule(
-          i,
-          "Attendance",
-          "5 minutes buffer only",
-          modifiedDateTime,
-          const NotificationDetails(
-            android: AndroidNotificationDetails(
-              'channel_id_attendance',
-              'Attendance Notifications',
-              importance: Importance.max,
-              priority: Priority.high,
-            ),
-          ),
-          uiLocalNotificationDateInterpretation:
-              UILocalNotificationDateInterpretation.absoluteTime,
-          androidAllowWhileIdle: true,
-        );
-      }
-    }
-  }
+  // notificationCode() async {
+  //   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  //       FlutterLocalNotificationsPlugin();
+  //   flutterLocalNotificationsPlugin
+  //       .resolvePlatformSpecificImplementation<
+  //           AndroidFlutterLocalNotificationsPlugin>()!
+  //       .requestPermission();
+  //
+  //   flutterLocalNotificationsPlugin.initialize(
+  //     const InitializationSettings(
+  //       android: AndroidInitializationSettings('app_icon'),
+  //     ),
+  //   );
+  //   tzl.initializeTimeZones();
+  //   for (int i = 0; i < controller.checkpoints.length; i++) {
+  //     String timestampString = controller.checkpoints[i]["timestamp"];
+  //     tz.TZDateTime dateTime =
+  //         tz.TZDateTime.parse(tz.getLocation('Asia/Kolkata'), timestampString);
+  //     tz.TZDateTime modifiedDateTime =
+  //         dateTime.subtract(const Duration(hours: 5, minutes: 30));
+  //
+  //     if (modifiedDateTime.isAfter(
+  //       tz.TZDateTime.now(
+  //         tz.getLocation('Asia/Kolkata'),
+  //       ),
+  //     )) {
+  //       print(modifiedDateTime);
+  //       print(
+  //           "${modifiedDateTime.day}/${modifiedDateTime.month}/${modifiedDateTime.year}");
+  //
+  //       await flutterLocalNotificationsPlugin.zonedSchedule(
+  //         i,
+  //         "Attendance",
+  //         "5 minutes buffer only",
+  //         modifiedDateTime,
+  //         const NotificationDetails(
+  //           android: AndroidNotificationDetails(
+  //             'channel_id_attendance',
+  //             'Attendance Notifications',
+  //             importance: Importance.max,
+  //             priority: Priority.high,
+  //           ),
+  //         ),
+  //         uiLocalNotificationDateInterpretation:
+  //             UILocalNotificationDateInterpretation.absoluteTime,
+  //         androidAllowWhileIdle: true,
+  //       );
+  //     }
+  //   }
+  // }
 
   @override
   void initState() {
-    notificationCode();
+    // notificationCode();
     super.initState();
   }
 
-  extra() async {
-    print("Hello");
-    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-        FlutterLocalNotificationsPlugin();
-
-    flutterLocalNotificationsPlugin.cancelAll();
-    List<PendingNotificationRequest> pendingNotifications =
-        await flutterLocalNotificationsPlugin.pendingNotificationRequests();
-
-    for (PendingNotificationRequest notification in pendingNotifications) {
-      print("Notification ID: ${notification.id}");
-      print("Title: ${notification.title}");
-      print("Body: ${notification.body}");
-    }
-  }
+  // extra() async {
+  //   print("Hello");
+  //   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  //       FlutterLocalNotificationsPlugin();
+  //
+  //   flutterLocalNotificationsPlugin.cancelAll();
+  //   List<PendingNotificationRequest> pendingNotifications =
+  //       await flutterLocalNotificationsPlugin.pendingNotificationRequests();
+  //
+  //   for (PendingNotificationRequest notification in pendingNotifications) {
+  //     print("Notification ID: ${notification.id}");
+  //     print("Title: ${notification.title}");
+  //     print("Body: ${notification.body}");
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

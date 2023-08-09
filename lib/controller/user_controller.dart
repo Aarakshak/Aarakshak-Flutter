@@ -32,7 +32,6 @@ class Controller extends GetxController{
   //
   var dayStarted = false.obs;
   var dayEnded = false.obs;
-  List checkpoints = [];
 
   Widget screen() {
     if (index.value == 0) {
