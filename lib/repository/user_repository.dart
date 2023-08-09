@@ -71,9 +71,9 @@ class User {
       "latitude": latitude,
       "longitude": longitude,
       "radius": radius,
-      "sessionID": sessionID,
+      "sessionID": sessionID
     };
-
+print(requestBody);
     final response = await http.post(
       startDutyUri,
       body: jsonEncode(requestBody),

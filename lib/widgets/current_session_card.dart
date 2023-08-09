@@ -85,6 +85,11 @@ class _CurrentSessionCardState extends State<CurrentSessionCard> {
             AndroidFlutterLocalNotificationsPlugin>()!
         .requestPermission();
 
+    flutterLocalNotificationsPlugin.initialize(
+      const InitializationSettings(
+        android: AndroidInitializationSettings('app_icon'),
+      ),
+    );
     tzl.initializeTimeZones();
     for (int i = 0; i < controller.checkpoints.length; i++) {
       String timestampString = controller.checkpoints[i]["timestamp"];
@@ -93,8 +98,11 @@ class _CurrentSessionCardState extends State<CurrentSessionCard> {
       tz.TZDateTime modifiedDateTime =
           dateTime.subtract(const Duration(hours: 5, minutes: 30));
 
-      if (modifiedDateTime
-          .isAfter(tz.TZDateTime.now(tz.getLocation('Asia/Kolkata')))) {
+      if (modifiedDateTime.isAfter(
+        tz.TZDateTime.now(
+          tz.getLocation('Asia/Kolkata'),
+        ),
+      )) {
         print(modifiedDateTime);
         print(
             "${modifiedDateTime.day}/${modifiedDateTime.month}/${modifiedDateTime.year}");
