@@ -63,7 +63,8 @@ class User {
     return response;
   }
 
-  Future<http.Response> startDuty(String userID, double latitude, double longitude, int radius) async {
+  Future<http.Response> startDuty(
+      String userID, double latitude, double longitude, int radius) async {
     Uri startDutyUri = Uri.parse("$baseUrl/user/start-duty/$userID");
 
     var requestBody = {
@@ -79,6 +80,7 @@ class User {
         'Content-Type': 'application/json',
       },
     );
+    print(response.body);
     return response;
   }
 
@@ -87,6 +89,9 @@ class User {
 
     final response = await http.post(
       startDutyUri,
+      headers: {
+        'Content-Type': 'application/json',
+      },
     );
     return response;
   }
@@ -109,5 +114,4 @@ class User {
 
     return response;
   }
-
 }
