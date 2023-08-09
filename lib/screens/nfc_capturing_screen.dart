@@ -85,6 +85,7 @@ class _NFCCapturingScreenState extends State<NFCCapturingScreen> {
                         controller.update();
                         Get.back();
                       } else {
+                        print("Wrong area");
                         print(response.statusCode);
                         print(response.body);
                         Get.back();

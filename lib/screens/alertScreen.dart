@@ -18,24 +18,17 @@ class AlertScreen extends StatefulWidget {
 class _AlertScreenState extends State<AlertScreen> {
   final Controller controller = Get.find();
   bool _isLoading = false;
+  List abc = [];
 
   fetchData() async {
     setState(() {
       _isLoading = false;
     });
     final response = await User().alerts(controller.badgeID.toString());
-    Map data = jsonDecode(response.body);
-    List<dynamic> upcomingSessions = data['upcomingSessions'];
-
-    for (var session in upcomingSessions) {
-      String date = session['date'];
-      String day = session['day'];
-      String location = session['location1'];
-
-      print('Date: $date');
-      print('Day: $day');
-      print('Location: $location');
-    }
+    print(response.body);
+    var data = jsonDecode(response.body);
+    abc = data[0];
+    print(abc);
     setState(() {
       _isLoading = true;
     });
@@ -106,9 +99,11 @@ class _AlertScreenState extends State<AlertScreen> {
                     ),
                     ListView.builder(
                       shrinkWrap: true,
-                      itemCount: 30,
+                      itemCount: abc.length,
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
+                        DateTime parsedDate = DateTime.parse(abc[0]["startTime"]);
+                        String formattedDate = '${parsedDate.year.toString().substring(2)}-${parsedDate.month.toString().padLeft(2, '0')}-${parsedDate.day.toString().padLeft(2, '0')}';
                         return Container(
                           height: 65,
                           width: double.infinity,
@@ -133,14 +128,14 @@ class _AlertScreenState extends State<AlertScreen> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  const Text(
-                                    "Duty Name",
-                                    style: TextStyle(
+                                  Text(
+                                    "${abc[index]["sessionLocation"]}",
+                                    style: const TextStyle(
                                         fontSize: 13,
                                         fontWeight: FontWeight.w700),
                                   ),
                                   Text(
-                                    "$index April",
+                                    formattedDate,
                                     style: const TextStyle(fontSize: 11),
                                   ),
                                 ],
@@ -148,15 +143,15 @@ class _AlertScreenState extends State<AlertScreen> {
                               const SizedBox(
                                 height: 3,
                               ),
-                              const Row(
+                              Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    "Location",
-                                    style: TextStyle(fontSize: 11),
+                                    "${abc[index]["description"]}",
+                                    style: const TextStyle(fontSize: 11),
                                   ),
-                                  Text(
+                                  const Text(
                                     "Day",
                                     style: TextStyle(fontSize: 11),
                                   ),

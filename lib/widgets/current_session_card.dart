@@ -63,7 +63,7 @@ class _CurrentSessionCardState extends State<CurrentSessionCard> {
     controller.currentLong = location.longitude;
 
     Future.delayed(const Duration(seconds: 10), () async {
-      await User().location_details(
+      User().location_details(
           controller.badgeID.toString().isEmpty
               ? "3"
               : controller.badgeID.toString(),
