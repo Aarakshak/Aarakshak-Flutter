@@ -27,7 +27,7 @@ class Controller extends GetxController{
   int? radius;
 
   //
-  bool dayStarted = false;
+  var dayStarted = false.obs;
   bool dayEnd = false;
   List checkpoints = [];
 

@@ -66,6 +66,7 @@ class _CurrentSessionCardState extends State<CurrentSessionCard> {
     FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
         FlutterLocalNotificationsPlugin();
 
+    flutterLocalNotificationsPlugin.cancelAll();
     List<PendingNotificationRequest> pendingNotifications =
         await flutterLocalNotificationsPlugin.pendingNotificationRequests();
 
@@ -73,14 +74,11 @@ class _CurrentSessionCardState extends State<CurrentSessionCard> {
       print("Notification ID: ${notification.id}");
       print("Title: ${notification.title}");
       print("Body: ${notification.body}");
-      print("Scheduled Time: ${notification}");
-      print("------------------------");
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    extra();
     return controller.checkInTime != null && controller.checkInTime != null
         ? Stack(
             alignment: AlignmentDirectional.centerEnd,
@@ -150,21 +148,58 @@ class _CurrentSessionCardState extends State<CurrentSessionCard> {
                   ),
                 ),
               ),
-              InkWell(
-                onTap: () async {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const NFCCapturingScreen(),
-                    ),
-                  );
-                },
-                child: Container(
-                  margin: const EdgeInsets.only(right: 20),
-                  child: SvgPicture.asset(
-                    'assets/images/tap_nfc.svg',
-                  ),
-                ),
-              ),
+              Obx(
+                () => controller.dayStarted.value
+                    ? IntrinsicWidth(
+                        child: Row(
+                          children: [
+                            InkWell(
+                              onTap: () async {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const NFCCapturingScreen(),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.only(right: 20),
+                                child: const Text("Day End"),
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () async {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const NFCCapturingScreen(),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.only(right: 20),
+                                child: const Text("Mark Attendance"),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    : InkWell(
+                        onTap: () async {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const NFCCapturingScreen(),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.only(right: 20),
+                          child: SvgPicture.asset(
+                            'assets/images/tap_nfc.svg',
+                          ),
+                        ),
+                      ),
+              )
             ],
           )
         : Container(

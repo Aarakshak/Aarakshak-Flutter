@@ -53,12 +53,12 @@ class _NFCCapturingScreenState extends State<NFCCapturingScreen> {
                     if (response.statusCode == 200) {
                       print(response.statusCode);
                       print(response.body);
-                      controller.dayStarted = true;
+                      controller.dayStarted.value = true;
+                      controller.update();
                       Get.back();
                     } else {
                       print(response.statusCode);
                       print(response.body);
-                      print("Retry");
                       Get.back();
                     }
                   } else {
