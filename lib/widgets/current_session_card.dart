@@ -1,4 +1,5 @@
 import 'package:aarakshak/controller/user_controller.dart';
+import 'package:aarakshak/repository/user_repository.dart';
 import 'package:aarakshak/widgets/current_session_bottomsheet.dart';
 import 'package:aarakshak/ui_components/colors/color_code.dart';
 import 'package:flutter/material.dart';
@@ -155,12 +156,8 @@ class _CurrentSessionCardState extends State<CurrentSessionCard> {
                           children: [
                             InkWell(
                               onTap: () async {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const NFCCapturingScreen(),
-                                  ),
-                                );
+                                final response = await User().endDuty(controller.badgeID.toString());
+                                print(response.body);
                               },
                               child: Container(
                                 margin: const EdgeInsets.only(right: 20),

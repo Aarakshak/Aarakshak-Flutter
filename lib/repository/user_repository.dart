@@ -81,4 +81,13 @@ class User {
     );
     return response;
   }
+
+  Future<http.Response> endDuty(String userID) async {
+    Uri startDutyUri = Uri.parse("$baseUrl/user/end-duty/$userID");
+
+    final response = await http.post(
+      startDutyUri,
+    );
+    return response;
+  }
 }
