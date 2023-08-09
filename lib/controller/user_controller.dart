@@ -15,6 +15,8 @@ class Controller extends GetxController{
   String? rank;
   String? profilePic;
   List sessions = [];
+  double? currentLat;
+  double? currentLong;
 
   // Current Session Data
   DateTime? checkInTime;

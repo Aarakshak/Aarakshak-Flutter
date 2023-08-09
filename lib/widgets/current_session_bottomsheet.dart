@@ -1,12 +1,18 @@
+import 'dart:convert';
+
+import 'package:aarakshak/controller/user_controller.dart';
+import 'package:aarakshak/repository/user_repository.dart';
 import 'package:aarakshak/ui_components/colors/color_code.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
 class CurrentSession extends StatelessWidget {
   const CurrentSession({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final Controller controller = Get.find();
     return SizedBox(
       height: 600,
       child: Stack(
@@ -319,8 +325,14 @@ class CurrentSession extends StatelessWidget {
                               ],
                             ),
                           ),
-                          SvgPicture.asset(
-                            'assets/images/sos.svg',
+                          InkWell(
+                            onTap: ()async {
+                              final response = await User().issues(controller.badgeID.toString(),controller.currentLat ?? 0,controller.currentLat ?? 0);
+                              print(jsonDecode(response.body));
+                            },
+                            child: SvgPicture.asset(
+                              'assets/images/sos.svg',
+                            ),
                           ),
                         ],
                       ),

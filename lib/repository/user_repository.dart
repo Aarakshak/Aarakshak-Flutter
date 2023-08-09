@@ -90,4 +90,24 @@ class User {
     );
     return response;
   }
+
+  Future<http.Response> issues(String userID, double lat, double long) async {
+    Uri issue = Uri.parse("$baseUrl/user/$userID/issues");
+
+    final response = await http.post(
+      issue,
+      body: jsonEncode({
+        "title": "SOS",
+        "issueText": "Important",
+        "latitude": lat,
+        "longitude": long
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    return response;
+  }
+
 }

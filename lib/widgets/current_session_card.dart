@@ -55,7 +55,10 @@ class _CurrentSessionCardState extends State<CurrentSessionCard> {
   }
 
   void _onLocationChanged(Location location) {
+    controller.currentLat = location.latitude;
+    controller.currentLong = location.longitude;
     print('location: ${location.toJson()}');
+
   }
 
   void _onLocationServicesStatusChanged(bool status) {

@@ -1,10 +1,17 @@
+import 'dart:convert';
+
+import 'package:aarakshak/controller/user_controller.dart';
 import 'package:aarakshak/ui_components/colors/color_code.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+
+import '../repository/user_repository.dart';
 
 class SessionDetailCard extends StatelessWidget {
-  const SessionDetailCard({super.key, required this.date});
+   SessionDetailCard({super.key, required this.date});
   final String date;
+  final Controller controller = Get.find();
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -320,8 +327,14 @@ class SessionDetailCard extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            SvgPicture.asset(
-                              'assets/images/sos.svg',
+                            InkWell(
+                              onTap: () async {
+                                final response = await User().issues(controller.badgeID.toString(),controller.currentLat ?? 0,controller.currentLat ?? 0);
+                                print(jsonDecode(response.body));
+                              },
+                              child: SvgPicture.asset(
+                                'assets/images/sos.svg',
+                              ),
                             ),
                           ],
                         ),
