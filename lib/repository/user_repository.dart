@@ -64,13 +64,14 @@ class User {
   }
 
   Future<http.Response> startDuty(
-      String userID, double latitude, double longitude, int radius) async {
+      String userID, double latitude, double longitude, int radius, int sessionID) async {
     Uri startDutyUri = Uri.parse("$baseUrl/user/start-duty/$userID");
 
     var requestBody = {
       "latitude": latitude,
       "longitude": longitude,
       "radius": radius,
+      "sessionID": sessionID,
     };
 
     final response = await http.post(

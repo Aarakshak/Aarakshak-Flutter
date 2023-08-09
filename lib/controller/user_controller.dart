@@ -27,6 +27,7 @@ class Controller extends GetxController{
   double? latitude;
   double? longitude;
   int? radius;
+  int? sessionID;
 
   //
   var dayStarted = false.obs;

@@ -44,9 +44,12 @@ class _NFCCapturingScreenState extends State<NFCCapturingScreen> {
                   controller.latitude = dataMap["latitude"];
                   controller.longitude = dataMap["longitude"];
                   controller.radius = dataMap["radius"];
+                  controller.sessionID = dataMap["sessionID"];
                   if (controller.latitude != null &&
                       controller.longitude != null &&
-                      controller.radius != null) {
+                      controller.radius != null &&
+                      controller.sessionID != null
+                  ) {
                     if (controller.dayStarted.value == false &&
                         await storage.read(key: "dayStarted") != 'true') {
                       print("Checking for day start");
@@ -54,7 +57,9 @@ class _NFCCapturingScreenState extends State<NFCCapturingScreen> {
                           controller.badgeID.toString(),
                           controller.latitude!,
                           controller.longitude!,
-                          controller.radius!);
+                          controller.radius!,
+                          controller.sessionID!
+                      );
                       if (response.statusCode == 200) {
                         print(response.statusCode);
                         print(response.body);
@@ -109,6 +114,7 @@ class _NFCCapturingScreenState extends State<NFCCapturingScreen> {
     controller.longitude = null;
     controller.latitude = null;
     controller.radius = null;
+    controller.sessionID = null;
     super.dispose();
   }
 
