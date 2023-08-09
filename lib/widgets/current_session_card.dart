@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:aarakshak/controller/user_controller.dart';
 import 'package:aarakshak/repository/user_repository.dart';
 import 'package:aarakshak/widgets/current_session_bottomsheet.dart';
@@ -5,6 +7,7 @@ import 'package:aarakshak/ui_components/colors/color_code.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:geofence_service/geofence_service.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:timezone/data/latest.dart' as tzl;
@@ -22,6 +25,53 @@ class _CurrentSessionCardState extends State<CurrentSessionCard> {
   bool firstCall = false;
   final Controller controller = Get.find();
 
+  final _geofenceService = GeofenceService.instance.setup(
+      interval: 5000,
+      accuracy: 100,
+      loiteringDelayMs: 60000,
+      statusChangeDelayMs: 10000,
+      useActivityRecognition: true,
+      allowMockLocations: false,
+      printDevLog: false,
+      geofenceRadiusSortType: GeofenceRadiusSortType.DESC);
+
+  final StreamController _geofenceStreamController = StreamController();
+  final StreamController _activityStreamController = StreamController();
+  Future<void> _onGeofenceStatusChanged(
+      Geofence geofence,
+      GeofenceRadius geofenceRadius,
+      GeofenceStatus geofenceStatus,
+      Location location) async {
+    print('geofence: ${geofence.toJson()}');
+    print('geofenceRadius: ${geofenceRadius.toJson()}');
+    print('geofenceStatus: ${geofenceStatus.toString()}');
+    _geofenceStreamController.sink.add(geofence);
+  }
+
+  void _onActivityChanged(Activity prevActivity, Activity currActivity) {
+    print('prevActivity: ${prevActivity.toJson()}');
+    print('currActivity: ${currActivity.toJson()}');
+    _activityStreamController.sink.add(currActivity);
+  }
+
+  void _onLocationChanged(Location location) {
+    print('location: ${location.toJson()}');
+  }
+
+  void _onLocationServicesStatusChanged(bool status) {
+    print('isLocationServicesEnabled: $status');
+  }
+
+  void _onError(error) {
+    final errorCode = getErrorCodesFromError(error);
+    if (errorCode == null) {
+      print('Undefined error: $error');
+      return;
+    }
+
+    print('ErrorCode: $errorCode');
+  }
+
   notificationCode() async {
     FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
         FlutterLocalNotificationsPlugin();
@@ -34,12 +84,15 @@ class _CurrentSessionCardState extends State<CurrentSessionCard> {
     for (int i = 0; i < controller.checkpoints.length; i++) {
       String timestampString = controller.checkpoints[i]["timestamp"];
       tz.TZDateTime dateTime =
-      tz.TZDateTime.parse(tz.getLocation('Asia/Kolkata'), timestampString);
-      tz.TZDateTime modifiedDateTime = dateTime.subtract(const Duration(hours: 5, minutes: 30));
+          tz.TZDateTime.parse(tz.getLocation('Asia/Kolkata'), timestampString);
+      tz.TZDateTime modifiedDateTime =
+          dateTime.subtract(const Duration(hours: 5, minutes: 30));
 
-      if (modifiedDateTime.isAfter(tz.TZDateTime.now(tz.getLocation('Asia/Kolkata')))) {
+      if (modifiedDateTime
+          .isAfter(tz.TZDateTime.now(tz.getLocation('Asia/Kolkata')))) {
         print(modifiedDateTime);
-        print("${modifiedDateTime.day}/${modifiedDateTime.month}/${modifiedDateTime.year}");
+        print(
+            "${modifiedDateTime.day}/${modifiedDateTime.month}/${modifiedDateTime.year}");
 
         await flutterLocalNotificationsPlugin.zonedSchedule(
           i,
@@ -55,7 +108,7 @@ class _CurrentSessionCardState extends State<CurrentSessionCard> {
             ),
           ),
           uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
+              UILocalNotificationDateInterpretation.absoluteTime,
           androidAllowWhileIdle: true,
         );
       }
@@ -162,11 +215,27 @@ class _CurrentSessionCardState extends State<CurrentSessionCard> {
                           children: [
                             InkWell(
                               onTap: () async {
-                                Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
+                                Navigator.of(context)
+                                    .push(MaterialPageRoute(
+                                  builder: (context) =>
                                       const NFCCapturingScreen(),
-                                    ));
+                                ))
+                                    .then((value) {
+                                  _geofenceService
+                                      .removeGeofenceStatusChangeListener(
+                                          _onGeofenceStatusChanged);
+                                  _geofenceService.removeLocationChangeListener(
+                                      _onLocationChanged);
+                                  _geofenceService
+                                      .removeLocationServicesStatusChangeListener(
+                                          _onLocationServicesStatusChanged);
+                                  _geofenceService.removeActivityChangeListener(
+                                      _onActivityChanged);
+                                  _geofenceService
+                                      .removeStreamErrorListener(_onError);
+                                  _geofenceService.clearAllListeners();
+                                  _geofenceService.stop();
+                                });
                               },
                               child: Container(
                                 margin: const EdgeInsets.only(right: 20),
@@ -174,14 +243,7 @@ class _CurrentSessionCardState extends State<CurrentSessionCard> {
                               ),
                             ),
                             InkWell(
-                              onTap: () async {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const NFCCapturingScreen(),
-                                  ),
-                                );
-                              },
+                              onTap: () async {},
                               child: Container(
                                 margin: const EdgeInsets.only(right: 20),
                                 child: const Text("Mark Attendance"),
@@ -192,11 +254,42 @@ class _CurrentSessionCardState extends State<CurrentSessionCard> {
                       )
                     : InkWell(
                         onTap: () async {
-                          Navigator.of(context).push(
+                          Navigator.of(context)
+                              .push(
                             MaterialPageRoute(
                               builder: (context) => const NFCCapturingScreen(),
                             ),
-                          );
+                          )
+                              .then((value) {
+                            final _geofenceList = <Geofence>[
+                              Geofence(
+                                id: 'place_1',
+                                latitude: controller.latitude!,
+                                longitude: controller.longitude!,
+                                radius: [
+                                  GeofenceRadius(
+                                      id: 'radius_100m',
+                                      length: controller.radius!.toDouble()),
+                                ],
+                              ),
+                            ];
+
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              _geofenceService.addGeofenceStatusChangeListener(
+                                  _onGeofenceStatusChanged);
+                              _geofenceService.addLocationChangeListener(
+                                  _onLocationChanged);
+                              _geofenceService
+                                  .addLocationServicesStatusChangeListener(
+                                      _onLocationServicesStatusChanged);
+                              _geofenceService.addActivityChangeListener(
+                                  _onActivityChanged);
+                              _geofenceService.addStreamErrorListener(_onError);
+                              _geofenceService
+                                  .start(_geofenceList)
+                                  .catchError(_onError);
+                            });
+                          });
                         },
                         child: Container(
                           margin: const EdgeInsets.only(right: 20),
