@@ -5,7 +5,10 @@ import 'package:aarakshak/repository/user_repository.dart';
 import 'package:aarakshak/ui_components/colors/color_code.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+
+import '../utils/location_permission.dart';
 
 class CurrentSession extends StatelessWidget {
   const CurrentSession({super.key});
@@ -326,8 +329,17 @@ class CurrentSession extends StatelessWidget {
                             ),
                           ),
                           InkWell(
-                            onTap: ()async {
-                              final response = await User().issues(controller.badgeID.toString(),controller.currentLat ?? 0,controller.currentLat ?? 0);
+                            onTap: () async {
+                              if (await requestLocationPermission()) {
+                                  Geolocator.requestPermission();
+                                  Position position = await Geolocator.getCurrentPosition();
+                                  controller.currentLat = position.latitude;
+                                  controller.currentLong = position.longitude;
+                              }
+                              final response = await User().issues(
+                                  controller.badgeID.toString(),
+                                  controller.currentLat ?? 0,
+                                  controller.currentLong ?? 0);
                               print(jsonDecode(response.body));
                             },
                             child: SvgPicture.asset(

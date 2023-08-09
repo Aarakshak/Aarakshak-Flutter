@@ -4,6 +4,7 @@ import 'package:aarakshak/controller/user_controller.dart';
 import 'package:aarakshak/repository/user_repository.dart';
 import 'package:aarakshak/ui_components/colors/color_code.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:nfc_manager/nfc_manager.dart';
@@ -17,6 +18,7 @@ class NFCCapturingScreen extends StatefulWidget {
 
 class _NFCCapturingScreenState extends State<NFCCapturingScreen> {
   final Controller controller = Get.find();
+  FlutterSecureStorage storage = const FlutterSecureStorage();
 
   Future<void> nfcStart1() async {
     bool isNfcAvailable = await NfcManager.instance.isAvailable();
@@ -45,7 +47,9 @@ class _NFCCapturingScreenState extends State<NFCCapturingScreen> {
                   if (controller.latitude != null &&
                       controller.longitude != null &&
                       controller.radius != null) {
-                    if (controller.dayStarted.value == false) {
+                    if (controller.dayStarted.value == false &&
+                        await storage.read(key: "dayStarted") != 'true') {
+                      print("Checking for day start");
                       var response = await User().startDuty(
                           controller.badgeID.toString(),
                           controller.latitude!,
@@ -55,6 +59,7 @@ class _NFCCapturingScreenState extends State<NFCCapturingScreen> {
                         print(response.statusCode);
                         print(response.body);
                         controller.dayStarted.value = true;
+                        storage.write(key: "dayStarted", value: "true");
                         controller.update();
                         Get.back();
                       } else {
@@ -62,13 +67,16 @@ class _NFCCapturingScreenState extends State<NFCCapturingScreen> {
                         print(response.body);
                         Get.back();
                       }
-                    } else if (controller.dayEnd.value == false) {
+                    } else if (controller.dayEnded.value == false &&
+                        await storage.read(key: "dayEnded") != 'true') {
+                      print("Checking for day end");
                       var response =
                           await User().endDuty(controller.badgeID.toString());
                       if (response.statusCode == 200) {
                         print(response.statusCode);
                         print(response.body);
-                        controller.dayEnd.value = true;
+                        controller.dayEnded.value = true;
+                        storage.write(key: "dayEnded", value: "true");
                         controller.update();
                         Get.back();
                       } else {

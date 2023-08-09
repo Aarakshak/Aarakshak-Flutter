@@ -1,11 +1,12 @@
 import 'dart:async';
 
 import 'package:aarakshak/controller/user_controller.dart';
-import 'package:aarakshak/repository/user_repository.dart';
+import 'package:aarakshak/utils/location_permission.dart';
 import 'package:aarakshak/widgets/current_session_bottomsheet.dart';
 import 'package:aarakshak/ui_components/colors/color_code.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geofence_service/geofence_service.dart';
 import 'package:get/get.dart';
@@ -24,6 +25,8 @@ class CurrentSessionCard extends StatefulWidget {
 class _CurrentSessionCardState extends State<CurrentSessionCard> {
   bool firstCall = false;
   final Controller controller = Get.find();
+
+  FlutterSecureStorage storage = const FlutterSecureStorage();
 
   final _geofenceService = GeofenceService.instance.setup(
       interval: 5000,
@@ -58,7 +61,6 @@ class _CurrentSessionCardState extends State<CurrentSessionCard> {
     controller.currentLat = location.latitude;
     controller.currentLong = location.longitude;
     print('location: ${location.toJson()}');
-
   }
 
   void _onLocationServicesStatusChanged(bool status) {
@@ -223,21 +225,27 @@ class _CurrentSessionCardState extends State<CurrentSessionCard> {
                                   builder: (context) =>
                                       const NFCCapturingScreen(),
                                 ))
-                                    .then((value) {
-                                  _geofenceService
-                                      .removeGeofenceStatusChangeListener(
-                                          _onGeofenceStatusChanged);
-                                  _geofenceService.removeLocationChangeListener(
-                                      _onLocationChanged);
-                                  _geofenceService
-                                      .removeLocationServicesStatusChangeListener(
-                                          _onLocationServicesStatusChanged);
-                                  _geofenceService.removeActivityChangeListener(
-                                      _onActivityChanged);
-                                  _geofenceService
-                                      .removeStreamErrorListener(_onError);
-                                  _geofenceService.clearAllListeners();
-                                  _geofenceService.stop();
+                                    .then((value) async {
+                                  if (await storage.read(key: "dayEnded") ==
+                                          'true' &&
+                                      controller.dayEnded.value) {
+                                    _geofenceService
+                                        .removeGeofenceStatusChangeListener(
+                                            _onGeofenceStatusChanged);
+                                    _geofenceService
+                                        .removeLocationChangeListener(
+                                            _onLocationChanged);
+                                    _geofenceService
+                                        .removeLocationServicesStatusChangeListener(
+                                            _onLocationServicesStatusChanged);
+                                    _geofenceService
+                                        .removeActivityChangeListener(
+                                            _onActivityChanged);
+                                    _geofenceService
+                                        .removeStreamErrorListener(_onError);
+                                    _geofenceService.clearAllListeners();
+                                    _geofenceService.stop();
+                                  }
                                 });
                               },
                               child: Container(
@@ -263,35 +271,44 @@ class _CurrentSessionCardState extends State<CurrentSessionCard> {
                               builder: (context) => const NFCCapturingScreen(),
                             ),
                           )
-                              .then((value) {
-                            final _geofenceList = <Geofence>[
-                              Geofence(
-                                id: 'place_1',
-                                latitude: controller.latitude!,
-                                longitude: controller.longitude!,
-                                radius: [
-                                  GeofenceRadius(
-                                      id: 'radius_100m',
-                                      length: controller.radius!.toDouble()),
-                                ],
-                              ),
-                            ];
+                              .then((value) async {
+                            bool permission_give =
+                                await requestLocationPermission();
+                            if (permission_give &&
+                                await storage.read(key: "dayStarted") ==
+                                    'true' &&
+                                controller.dayStarted.value) {
+                              final _geofenceList = <Geofence>[
+                                Geofence(
+                                  id: 'place_1',
+                                  latitude: controller.latitude!,
+                                  longitude: controller.longitude!,
+                                  radius: [
+                                    GeofenceRadius(
+                                        id: 'radius_100m',
+                                        length: controller.radius!.toDouble()),
+                                  ],
+                                ),
+                              ];
 
-                            WidgetsBinding.instance.addPostFrameCallback((_) {
-                              _geofenceService.addGeofenceStatusChangeListener(
-                                  _onGeofenceStatusChanged);
-                              _geofenceService.addLocationChangeListener(
-                                  _onLocationChanged);
-                              _geofenceService
-                                  .addLocationServicesStatusChangeListener(
-                                      _onLocationServicesStatusChanged);
-                              _geofenceService.addActivityChangeListener(
-                                  _onActivityChanged);
-                              _geofenceService.addStreamErrorListener(_onError);
-                              _geofenceService
-                                  .start(_geofenceList)
-                                  .catchError(_onError);
-                            });
+                              WidgetsBinding.instance.addPostFrameCallback((_) {
+                                _geofenceService
+                                    .addGeofenceStatusChangeListener(
+                                        _onGeofenceStatusChanged);
+                                _geofenceService.addLocationChangeListener(
+                                    _onLocationChanged);
+                                _geofenceService
+                                    .addLocationServicesStatusChangeListener(
+                                        _onLocationServicesStatusChanged);
+                                _geofenceService.addActivityChangeListener(
+                                    _onActivityChanged);
+                                _geofenceService
+                                    .addStreamErrorListener(_onError);
+                                _geofenceService
+                                    .start(_geofenceList)
+                                    .catchError(_onError);
+                              });
+                            }
                           });
                         },
                         child: Container(
