@@ -45,21 +45,37 @@ class _NFCCapturingScreenState extends State<NFCCapturingScreen> {
                   if (controller.latitude != null &&
                       controller.longitude != null &&
                       controller.radius != null) {
-                    var response = await User().startDuty(
-                        controller.badgeID.toString(),
-                        controller.latitude!,
-                        controller.longitude!,
-                        controller.radius!);
-                    if (response.statusCode == 200) {
-                      print(response.statusCode);
-                      print(response.body);
-                      controller.dayStarted.value = true;
-                      controller.update();
-                      Get.back();
-                    } else {
-                      print(response.statusCode);
-                      print(response.body);
-                      Get.back();
+                    if (controller.dayStarted.value == false) {
+                      var response = await User().startDuty(
+                          controller.badgeID.toString(),
+                          controller.latitude!,
+                          controller.longitude!,
+                          controller.radius!);
+                      if (response.statusCode == 200) {
+                        print(response.statusCode);
+                        print(response.body);
+                        controller.dayStarted.value = true;
+                        controller.update();
+                        Get.back();
+                      } else {
+                        print(response.statusCode);
+                        print(response.body);
+                        Get.back();
+                      }
+                    } else if (controller.dayEnd.value == false) {
+                      var response =
+                          await User().endDuty(controller.badgeID.toString());
+                      if (response.statusCode == 200) {
+                        print(response.statusCode);
+                        print(response.body);
+                        controller.dayEnd.value = true;
+                        controller.update();
+                        Get.back();
+                      } else {
+                        print(response.statusCode);
+                        print(response.body);
+                        Get.back();
+                      }
                     }
                   } else {
                     print("Retry");

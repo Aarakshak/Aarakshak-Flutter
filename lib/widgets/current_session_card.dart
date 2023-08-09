@@ -34,25 +34,31 @@ class _CurrentSessionCardState extends State<CurrentSessionCard> {
     for (int i = 0; i < controller.checkpoints.length; i++) {
       String timestampString = controller.checkpoints[i]["timestamp"];
       tz.TZDateTime dateTime =
-          tz.TZDateTime.parse(tz.getLocation('UTC'), timestampString);
-      print(dateTime);
-      await flutterLocalNotificationsPlugin.zonedSchedule(
-        i,
-        "Attendance",
-        "5 minutes buffer only",
-        dateTime,
-        const NotificationDetails(
-          android: AndroidNotificationDetails(
-            'channel_id_attendance',
-            'Attendance Notifications',
-            importance: Importance.max,
-            priority: Priority.high,
+      tz.TZDateTime.parse(tz.getLocation('Asia/Kolkata'), timestampString);
+      tz.TZDateTime modifiedDateTime = dateTime.subtract(const Duration(hours: 5, minutes: 30));
+
+      if (modifiedDateTime.isAfter(tz.TZDateTime.now(tz.getLocation('Asia/Kolkata')))) {
+        print(modifiedDateTime);
+        print("${modifiedDateTime.day}/${modifiedDateTime.month}/${modifiedDateTime.year}");
+
+        await flutterLocalNotificationsPlugin.zonedSchedule(
+          i,
+          "Attendance",
+          "5 minutes buffer only",
+          modifiedDateTime,
+          const NotificationDetails(
+            android: AndroidNotificationDetails(
+              'channel_id_attendance',
+              'Attendance Notifications',
+              importance: Importance.max,
+              priority: Priority.high,
+            ),
           ),
-        ),
-        uiLocalNotificationDateInterpretation:
-            UILocalNotificationDateInterpretation.absoluteTime,
-        androidAllowWhileIdle: true,
-      );
+          uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+          androidAllowWhileIdle: true,
+        );
+      }
     }
   }
 
@@ -156,8 +162,11 @@ class _CurrentSessionCardState extends State<CurrentSessionCard> {
                           children: [
                             InkWell(
                               onTap: () async {
-                                final response = await User().endDuty(controller.badgeID.toString());
-                                print(response.body);
+                                Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                      const NFCCapturingScreen(),
+                                    ));
                               },
                               child: Container(
                                 margin: const EdgeInsets.only(right: 20),
